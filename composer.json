@@ -1,0 +1,26 @@
+{
+    "name": "coyote/coyote-api-client",
+    "description": "A client for the Coyote.pics image description service",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^7.4",
+        "json-mapper/json-mapper": "^2.9.1",
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Job van Achterberg",
+            "email": "mail@3ode.nl"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Coyote\\": "src/"
+        }
+    }
+}
