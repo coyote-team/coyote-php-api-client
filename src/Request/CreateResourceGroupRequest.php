@@ -3,7 +3,6 @@
 namespace Coyote\Request;
 
 use Coyote\ApiResponse\CreateResourceGroupApiResponse;
-use Coyote\ApiResponse\GetProfileApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceGroupModel;
 use Coyote\Payload\CreateResourceGroupPayload;
@@ -24,7 +23,11 @@ class CreateResourceGroupRequest
 
     public function perform(): ?ResourceGroupModel
     {
-        $json = $this->apiClient->post(self::PATH, $this->marshallPayload(), [InternalApiClient::INCLUDE_ORG_ID => true]);
+        $json = $this->apiClient->post(
+            self::PATH,
+            $this->marshallPayload(),
+            [InternalApiClient::INCLUDE_ORG_ID => true]
+        );
 
         if (is_null($json)) {
             return null;
@@ -42,6 +45,7 @@ class CreateResourceGroupRequest
         return new ResourceGroupModel($response->data);
     }
 
+    /** @return mixed[] */
     private function marshallPayload(): array
     {
         return get_object_vars($this->payload);

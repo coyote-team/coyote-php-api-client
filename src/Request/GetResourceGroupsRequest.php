@@ -2,12 +2,8 @@
 
 namespace Coyote\Request;
 
-use Coyote\ApiModel\OrganizationApiModel;
-use Coyote\ApiModel\ProfileApiModel;
-use Coyote\ApiResponse\GetProfileApiResponse;
 use Coyote\ApiResponse\GetResourceGroupsApiResponse;
 use Coyote\InternalApiClient;
-use Coyote\Model\ProfileModel;
 use Coyote\Model\ResourceGroupModel;
 use JsonMapper\JsonMapperFactory;
 use stdClass;
@@ -24,7 +20,8 @@ class GetResourceGroupsRequest
     }
 
     /** @return ResourceGroupModel[]|null */
-    public function data(): ?array {
+    public function data(): ?array
+    {
         $json = $this->client->get(self::PATH, [InternalApiClient::INCLUDE_ORG_ID => true]);
 
         if (is_null($json)) {

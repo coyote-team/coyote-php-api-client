@@ -11,6 +11,7 @@ use Coyote\Request\GetResourceGroupsRequest;
 use Coyote\Request\GetResourceRepresentationsRequest;
 use Coyote\Request\GetResourceRequest;
 use Coyote\Request\GetResourcesRequest;
+use Exception;
 
 class CoyoteApiClient
 {
@@ -32,24 +33,24 @@ class CoyoteApiClient
         return (new GetResourcesRequest($this->apiClient))->data();
     }
 
-    public function getResource(int $id): ?ResourceModel
+    public function getResource(string $id): ?ResourceModel
     {
         return (new GetResourceRequest($this->apiClient, $id))->data();
     }
 
     public function createResource(): void
     {
-        throw new \Exception("createResource is not yet implemented.");
+        throw new Exception("createResource is not yet implemented.");
     }
 
     public function createResources(): void
     {
-        throw new \Exception("createResources is not yet implemented.");
+        throw new Exception("createResources is not yet implemented.");
     }
 
-    public function updateResource(int $id): void
+    public function updateResource(string $id): void
     {
-        throw new \Exception("updateResource is not yet implemented.");
+        throw new Exception("updateResource is not yet implemented.");
     }
 
     /** @return RepresentationModel[]|null */
@@ -60,10 +61,13 @@ class CoyoteApiClient
 
     public function getResourceRepresentation(string $id): void
     {
-        throw new \Exception("getResourceRepresentation is not yet implemented.");
+        throw new Exception("getResourceRepresentation is not yet implemented.");
         //return (new GetResourceRepresentationRequest($this->apiClient, $id))->data();
     }
 
+    /**
+     * @return ResourceGroupModel[]|null
+     */
     public function getResourceGroups(): ?array
     {
         return (new GetResourceGroupsRequest($this->apiClient))->data();
@@ -71,11 +75,11 @@ class CoyoteApiClient
 
     public function getResourceGroup(string $id): ?ResourceGroupModel
     {
-        throw new \Exception("getResourceGroup is not yet implemented.");
+        throw new Exception("getResourceGroup is not yet implemented.");
     }
 
     public function createResourceGroup(): ?ResourceGroupModel
     {
-        throw new \Exception("createResourceGroup is not yet implemented.");
+        throw new Exception("createResourceGroup is not yet implemented.");
     }
 }

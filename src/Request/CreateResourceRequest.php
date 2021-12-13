@@ -8,7 +8,9 @@ use Coyote\ApiResponse\CreateResourceApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
 use Coyote\Payload\CreateResourcePayload;
+use JetBrains\PhpStorm\ArrayShape;
 use JsonMapper\JsonMapperFactory;
+use stdClass;
 
 class CreateResourceRequest
 {
@@ -25,7 +27,11 @@ class CreateResourceRequest
 
     public function perform(): ?ResourceModel
     {
-        $json = $this->apiClient->post(self::PATH, $this->marshallPayload(), [InternalApiClient::INCLUDE_ORG_ID => true]);
+        $json = $this->apiClient->post(
+            self::PATH,
+            $this->marshallPayload(),
+            [InternalApiClient::INCLUDE_ORG_ID => true]
+        );
 
         if (is_null($json)) {
             return null;
@@ -47,12 +53,14 @@ class CreateResourceRequest
 
         $organizationApiModel = new OrganizationApiModel();
 
-        /** @var \stdClass[] $organizationApiData */
+        /** @var stdClass[] $organizationApiData */
         $organizationApiData = array_filter($response->included, function ($data) {
             return $data->type === OrganizationApiModel::TYPE;
         });
 
-        $mapper->mapObject(array_shift($organizationApiData), $organizationApiModel);
+        $data = array_shift($organizationApiData) ?? new stdClass();
+
+        $mapper->mapObject($data, $organizationApiModel);
 
         return $organizationApiModel;
     }
@@ -68,6 +76,7 @@ class CreateResourceRequest
         }), new ResourceRepresentationApiModel());
     }
 
+    /** @return mixed[] */
     private function marshallPayload(): array
     {
         return [

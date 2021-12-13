@@ -10,6 +10,8 @@ use Coyote\ApiModel\ResourceRepresentationApiModel;
 use Coyote\ApiResponse\GetResourcesApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
+use JsonMapper\Exception\BuilderException;
+use JsonMapper\Exception\ClassFactoryException;
 use JsonMapper\Handler\FactoryRegistry;
 use JsonMapper\JsonMapperBuilder;
 use JsonMapper\JsonMapperFactory;
@@ -27,7 +29,7 @@ class GetResourcesRequest
         $this->client = $client;
     }
 
-    /** @return Array<ResourceModel>|null */
+    /** @return ResourceModel[]|null */
     public function data(
         ?int $pageNumber = null,
         ?int $pageSize = null,
@@ -43,11 +45,16 @@ class GetResourcesRequest
         return $this->mapResponseToResourceModels($json);
     }
 
-    /** @return Array<ResourceModel>|null */
-    private function mapResponseToResourceModels(stdClass $json): ?array
+    /** @return ResourceModel[]
+     * @throws ClassFactoryException|BuilderException
+     */
+    private function mapResponseToResourceModels(stdClass $json): array
     {
         $interfaceResolver = new FactoryRegistry();
-        $interfaceResolver->addFactory(AbstractResourceRelatedApiModel::class, new ResourceRelatedModelInstanceFactory());
+        $interfaceResolver->addFactory(
+            AbstractResourceRelatedApiModel::class,
+            new ResourceRelatedModelInstanceFactory()
+        );
         $propertyMapper = PropertyMapperBuilder::new()
             ->withNonInstantiableTypeResolver($interfaceResolver)
             ->build();
@@ -74,17 +81,19 @@ class GetResourcesRequest
 
         $organizationApiModel = new OrganizationApiModel();
 
-        /** @var \stdClass[] $organizationApiData */
+        /** @var stdClass[] $organizationApiData */
         $organizationApiData = array_filter($response->included, function ($data) {
             return $data->type === OrganizationApiModel::TYPE;
         });
 
-        $mapper->mapObject(array_shift($organizationApiData), $organizationApiModel);
+        $data = array_shift($organizationApiData) ?? new stdClass();
+
+        $mapper->mapObject($data, $organizationApiModel);
 
         return $organizationApiModel;
     }
 
-    /** @return Array<ResourceRepresentationApiModel> */
+    /** @return ResourceRepresentationApiModel[] */
     private function getRepresentationApiModels(GetResourcesApiResponse $response): array
     {
         $mapper = (new JsonMapperFactory())->bestFit();

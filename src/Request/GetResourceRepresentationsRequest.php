@@ -22,7 +22,8 @@ class GetResourceRepresentationsRequest
     }
 
     /** @return RepresentationModel[]|null */
-    public function data(): ?array {
+    public function data(): ?array
+    {
         $json = $this->client->get(sprintf(self::PATH, $this->resource_id));
 
         if (is_null($json)) {
@@ -42,9 +43,13 @@ class GetResourceRepresentationsRequest
         return $this->mapRepresentationApiModelsToRepresentationModels($response);
     }
 
-    /** @return RepresentationModel[] */
-    private function mapRepresentationApiModelsToRepresentationModels(GetResourceRepresentationsApiResponse $response): array
-    {
+    /**
+     * @param GetResourceRepresentationsApiResponse $response
+     * @return RepresentationModel[]
+     */
+    private function mapRepresentationApiModelsToRepresentationModels(
+        GetResourceRepresentationsApiResponse $response
+    ): array {
         return array_map(function ($apiModel) {
             return new RepresentationModel($apiModel);
         }, $response->data);

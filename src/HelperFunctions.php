@@ -7,17 +7,24 @@ use Coyote\Model\ProfileModel;
 use Coyote\Model\ResourceGroupModel;
 use Coyote\Model\ResourceModel;
 use Coyote\Payload\CreateResourceGroupPayload;
+use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
 use Coyote\Request\CreateResourceGroupRequest;
 use Coyote\Request\CreateResourcesRequest;
 use Coyote\Request\GetProfileRequest;
 use Coyote\Request\GetResourceGroupsRequest;
 use Coyote\Request\GetResourceRequest;
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
 
 class HelperFunctions
 {
-    public static function GetResourceGroupByUri(string $endpoint, string $token, int $organizationId, string $uri): ?ResourceGroupModel
-    {
+    public static function getResourceGroupByUri(
+        string $endpoint,
+        string $token,
+        int $organizationId,
+        string $uri
+    ): ?ResourceGroupModel {
         $client = new InternalApiClient($endpoint, $token, $organizationId);
         $groups = (new GetResourceGroupsRequest($client))->data();
 
@@ -25,7 +32,7 @@ class HelperFunctions
             return null;
         }
 
-        $matches = array_filter($groups, function(ResourceGroupModel $group) use($uri) :bool {
+        $matches = array_filter($groups, function (ResourceGroupModel $group) use ($uri) :bool {
             return $group->getUri() === $uri;
         });
 
@@ -36,8 +43,12 @@ class HelperFunctions
         return array_shift($matches);
     }
 
-    public static function GetResourceById(string $endpoint, string $token, int $organizationId, string $resourceId): ?ResourceModel
-    {
+    public static function getResourceById(
+        string $endpoint,
+        string $token,
+        int $organizationId,
+        string $resourceId
+    ): ?ResourceModel {
         $client = new InternalApiClient($endpoint, $token, $organizationId);
         return (new GetResourceRequest($client, $resourceId))->data();
     }
@@ -71,15 +82,34 @@ class HelperFunctions
         return $profile->getName();
     }
 
-    public static function createResourceGroup(string $endpoint, string $token, string $organizationId, string $groupName, string $groupUri = null): ?ResourceGroupModel
-    {
+    public static function createResourceGroup(
+        string $endpoint,
+        string $token,
+        int $organizationId,
+        string $groupName,
+        string $groupUri = null
+    ): ?ResourceGroupModel {
         $client = new InternalApiClient($endpoint, $token, $organizationId);
-        return (new CreateResourceGroupRequest($client, new CreateResourceGroupPayload($groupName, $groupUri)))->perform();
+        return (new CreateResourceGroupRequest(
+            $client,
+            new CreateResourceGroupPayload($groupName, $groupUri)
+        ))->perform();
     }
 
-    /** @return ResourceModel[]|null */
-    public static function createResources(string $endpoint, string $token, string $organizationId, array $resources): ?array
-    {
+    /**
+     * @param string $endpoint
+     * @param string $token
+     * @param int $organizationId
+     * @param CreateResourcePayload[] $resources
+     * @return ResourceModel[]|null
+     * @throws Exception|GuzzleException
+     */
+    public static function createResources(
+        string $endpoint,
+        string $token,
+        int $organizationId,
+        array $resources
+    ): ?array {
         $client = new InternalApiClient($endpoint, $token, $organizationId);
         $payload = new CreateResourcesPayload();
 

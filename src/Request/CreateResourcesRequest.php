@@ -2,14 +2,14 @@
 
 namespace Coyote\Request;
 
-use Coyote\ApiModel\OrganizationApiModel;
-use Coyote\ApiModel\ResourceRepresentationApiModel;
-use Coyote\ApiResponse\CreateResourceApiResponse;
 use Coyote\ApiResponse\CreateResourcesApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
 use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
+use Exception;
+use GuzzleHttp\Exception\GuzzleException;
+use JetBrains\PhpStorm\ArrayShape;
 use JsonMapper\JsonMapperFactory;
 
 class CreateResourcesRequest
@@ -25,10 +25,16 @@ class CreateResourcesRequest
         $this->payload = $payload;
     }
 
-    /** @return ResourceModel[]|null */
+    /** @return ResourceModel[]|null
+     * @throws Exception|GuzzleException
+     */
     public function perform(): ?array
     {
-        $json = $this->apiClient->post(self::PATH, $this->marshallPayload(), [InternalApiClient::INCLUDE_ORG_ID => true]);
+        $json = $this->apiClient->post(
+            self::PATH,
+            $this->marshallPayload(),
+            [InternalApiClient::INCLUDE_ORG_ID => true]
+        );
 
         if (is_null($json)) {
             return null;
@@ -42,6 +48,7 @@ class CreateResourcesRequest
 //        return new ResourceModel($response->data, null, $representationApiModels);
     }
 
+    /** @return mixed[] */
     private function marshallPayload(): array
     {
         return [

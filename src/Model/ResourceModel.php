@@ -82,7 +82,11 @@ class ResourceModel
      * @param OrganizationApiModel $organizationApiModel
      * @param array<ResourceRepresentationApiModel> $representations
      */
-    public function __construct(ResourceApiModel $model, OrganizationApiModel $organizationApiModel, array $representations) {
+    public function __construct(
+        ResourceApiModel $model,
+        OrganizationApiModel $organizationApiModel,
+        array $representations
+    ) {
         $this->id = $model->id;
         $this->canonical_id = $model->attributes->canonical_id;
         $this->name = $model->attributes->name;

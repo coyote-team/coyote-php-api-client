@@ -2,7 +2,9 @@
 
 namespace Coyote\ApiModel\Partial;
 
+use stdClass;
+
 class ResourceGroupRelationships
 {
-    public \stdClass $organization;
+    public stdClass $organization;
 }

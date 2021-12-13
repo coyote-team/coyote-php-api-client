@@ -2,7 +2,9 @@
 
 namespace Coyote;
 
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
 
@@ -18,10 +20,10 @@ class InternalApiClient
 
     private string $endpoint;
     private string $token;
-    private int $organizationId;
+    private ?int $organizationId;
     private string $locale = 'en';
 
-    public function __construct(string $endpoint, string $token, int $organizationId)
+    public function __construct(string $endpoint, string $token, ?int $organizationId)
     {
         $this->endpoint = $endpoint;
         $this->token = $token;
@@ -31,11 +33,12 @@ class InternalApiClient
     }
 
     /**
-     * @param array<mixed> $options
+     * @param array $options
      *
-     * @throws \Exception
+     * @return null|stdClass
+     * @throws GuzzleException
      *
-     * @return null|\stdClass
+     * @throws Exception
      */
     public function get(string $url, array $options = []): ?stdClass
     {
@@ -50,12 +53,13 @@ class InternalApiClient
     }
 
     /**
-     * @param array<mixed> $payload
-     * @param array<mixed> $options
-     *
-     * @throws \Exception
+     * @param array $payload
+     * @param array $options
      *
      * @return null|stdClass
+     * @throws GuzzleException
+     *
+     * @throws Exception
      */
     public function post(string $url, array $payload, array $options = []): ?stdClass
     {
@@ -66,14 +70,14 @@ class InternalApiClient
     }
 
     /**
-     * @param array<mixed> $payload
-     * @param array<mixed> $options
+     * @param array $payload
+     * @param array $options
      *
-     * @throws \Exception
+     * @return null|stdClass
+     * @throws Exception|GuzzleException
      *
-     * @return null|array<mixed>
      */
-    public function put(string $url, array $payload, array $options = []): ?array
+    public function put(string $url, array $payload, array $options = []): ?stdClass
     {
         return self::request(
             $this->makeUrl($url),
@@ -81,7 +85,7 @@ class InternalApiClient
         );
     }
 
-    private function makeUrl(string $part, $includeOrganizationId = false): string
+    private function makeUrl(string $part, bool $includeOrganizationId = false): string
     {
         return $includeOrganizationId
             ? sprintf('%s/organizations/%d/%s', $this->endpoint, $this->organizationId, $part)
@@ -89,65 +93,70 @@ class InternalApiClient
     }
 
     /**
-     * @param array<mixed> $options
+     * @param string $url
+     * @param array $options
      *
-     * @throws \Exception
-     *
-     * @return null|array<mixed>
+     * @return null|stdClass
+     * @throws GuzzleException
+     * @throws Exception
      */
     private function request(string $url, array $options = []): ?stdClass
     {
         $options = array_merge(
             $options,
-            ['headers' => $this->getRequestHeaders($options)],
+            ['headers' => $this->getRequestHeaders()],
             ['http_errors' => false],
         );
 
         switch ($options['method']) {
             case self::METHOD_GET:
                 $response = $this->client->get($url, $options);
-
                 break;
 
             case self::METHOD_POST:
                 $response = $this->client->post($url, $options);
+                break;
 
+            case self::METHOD_PUT:
+                $response = $this->client->put($url, $options);
                 break;
 
             default:
-                throw new \Exception('Invalid Coyote API request');
+                throw new Exception('Invalid Coyote API request');
         }
 
         $body = (string) $response->getBody();
 
         if ($this->isResponseOk($response)) {
-            return json_decode($body);
+            $decoded = json_decode($body);
+
+            if (is_object($decoded) && is_a($decoded, stdClass::class)) {
+                return $decoded;
+            }
+
+            return null;
         }
 
         $status = $response->getStatusCode();
 
-        throw new \Exception("Invalid Coyote API response for {$url}");
+        throw new Exception("Invalid Coyote API response for $url, status $status");
     }
 
     /**
-     * @param array<mixed> $options
      *
-     * @return array<mixed>
+     * @return array
      */
-    private function getRequestHeaders(array $options = []): array
+    private function getRequestHeaders(): array
     {
-        $headers = [
+        return [
             'Authorization' => $this->token,
             'Accept-Language' => $this->locale,
             'Content-Type' => 'application/json',
         ];
-
-        return $headers;
     }
 
     private function isResponseOk(ResponseInterface $response): bool
     {
         return $response->getStatusCode() >= 200 && $response->getStatusCode() < 400;
     }
-
 }

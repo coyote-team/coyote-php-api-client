@@ -21,8 +21,9 @@ class GetProfileRequest
         $this->client = $client;
     }
 
-    /** @return ProfileApiModel|null */
-    public function data(): ?ProfileModel {
+    /** @return ProfileModel|null */
+    public function data(): ?ProfileModel
+    {
         $json = $this->client->get(self::PATH);
 
         if (is_null($json)) {
@@ -32,8 +33,7 @@ class GetProfileRequest
         return $this->mapResponseToProfileModel($json);
     }
 
-    /** @return ProfileModel|null */
-    private function mapResponseToProfileModel(stdClass $json): ?ProfileModel
+    private function mapResponseToProfileModel(stdClass $json): ProfileModel
     {
         $mapper = (new JsonMapperFactory())->bestFit();
         $response = new GetProfileApiResponse();

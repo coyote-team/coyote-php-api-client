@@ -8,16 +8,19 @@ class CreateResourcePayload
     public string $source_uri;
 
     public ?string $resource_group_id = null;
+
+    /** @var string[]|null */
     public ?array $host_uris = null;
 
     public string $resource_type = 'image';
     public string $language = 'en';
 
-    public ?array $representations = null;
+    /** @var ResourceRepresentationPayload[]|null */
+    public ?array $representations = [];
 
     public function __construct(
         string $name,
-        string $uri = null,
+        string $uri,
         string $resource_group_id = null,
         string $host_uri = null
     ) {
@@ -42,5 +45,5 @@ class CreateResourcePayload
         } else {
             $this->representations[] = $representation;
         }
-     }
+    }
 }

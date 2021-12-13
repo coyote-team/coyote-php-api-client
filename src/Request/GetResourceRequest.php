@@ -5,10 +5,7 @@ namespace Coyote\Request;
 use Coyote\ApiModel\OrganizationApiModel;
 use Coyote\ApiModel\ResourceRepresentationApiModel;
 use Coyote\ApiResponse\GetResourceApiResponse;
-use Coyote\ApiResponse\GetResourceRepresentationsApiResponse;
-use Coyote\ApiResponse\GetResourcesApiResponse;
 use Coyote\InternalApiClient;
-use Coyote\Model\RepresentationModel;
 use Coyote\Model\ResourceModel;
 use JsonMapper\JsonMapperFactory;
 use stdClass;
@@ -26,7 +23,8 @@ class GetResourceRequest
         $this->resource_id = $resource_id;
     }
 
-    public function data(): ?ResourceModel {
+    public function data(): ?ResourceModel
+    {
         $json = $this->client->get(sprintf(self::PATH, $this->resource_id));
 
         if (is_null($json)) {
@@ -36,7 +34,7 @@ class GetResourceRequest
         return $this->mapResponseToResourceModel($json);
     }
 
-    private function mapResponseToResourceModel(stdClass $json): ?ResourceModel
+    private function mapResponseToResourceModel(stdClass $json): ResourceModel
     {
         $mapper = (new JsonMapperFactory())->bestFit();
         $response = new GetResourceApiResponse();
@@ -54,12 +52,14 @@ class GetResourceRequest
 
         $organizationApiModel = new OrganizationApiModel();
 
-        /** @var \stdClass[] $organizationApiData */
+        /** @var stdClass[] $organizationApiData */
         $organizationApiData = array_filter($response->included, function ($data) {
             return $data->type === OrganizationApiModel::TYPE;
         });
 
-        $mapper->mapObject(array_shift($organizationApiData), $organizationApiModel);
+        $data = array_shift($organizationApiData) ?? new stdClass();
+
+        $mapper->mapObject($data, $organizationApiModel);
 
         return $organizationApiModel;
     }
