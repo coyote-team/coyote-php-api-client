@@ -32,23 +32,27 @@ class GetResourceGroupsRequestTest extends AbstractTestCase
         parent::setUp();
     }
 
-    public function testInvalidResponseMapsToNull(): void
+    /** @return ResourceGroupModel[]|null */
+    private function doRequest(?array $responses = null): ?array
     {
-        $this->setResponses([
-            new Response(404)
-        ]);
+        if (!is_null($responses)) {
+            $this->setResponses($responses);
+        }
 
         $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetResourceGroupsRequest($client))->data();
+        return (new GetResourceGroupsRequest($client))->data();
+    }
 
+
+    public function testInvalidResponseMapsToNull(): void
+    {
+        $response = $this->doRequest([new Response(404)]);
         $this->assertNull($response);
     }
 
     public function testValidResponseMapsToResourceGroupsModels(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetResourceGroupsRequest($client))->data();
-
+        $response = $this->doRequest();
         $this->assertNotNull($response);
         $this->assertIsArray($response);
         $this->assertCount(count($this->contract->data), $response);
@@ -60,37 +64,25 @@ class GetResourceGroupsRequestTest extends AbstractTestCase
 
     public function testGroupNameIsAvailable(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetResourceGroupsRequest($client))->data();
-        $group = array_shift($response);
-
+        $group = $this->doRequest()[0];
         $this->assertEquals($group->getName(), $this->contract->data[0]->attributes->name);
     }
 
     public function testGroupIdIsAvailable(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetResourceGroupsRequest($client))->data();
-        $group = array_shift($response);
-
+        $group = $this->doRequest()[0];
         $this->assertEquals($group->getId(), $this->contract->data[0]->id);
     }
 
     public function testGroupUriIsAvailable(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetResourceGroupsRequest($client))->data();
-        $group = array_shift($response);
-
+        $group = $this->doRequest()[0];
         $this->assertEquals($group->getUri(), $this->contract->data[0]->attributes->webhook_uri);
     }
 
     public function testGroupDefaultSettingIsAvailable(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetResourceGroupsRequest($client))->data();
-        $group = array_shift($response);
-
+        $group = $this->doRequest()[0];
         $this->assertEquals($group->isDefault(), $this->contract->data[0]->attributes->default);
     }
 }

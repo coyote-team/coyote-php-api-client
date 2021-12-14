@@ -26,44 +26,41 @@ class GetProfileRequestTest extends AbstractTestCase
         parent::setUp();
     }
 
-    public function testInvalidResponseMapsToNull(): void
+    private function doRequest(?array $responses = null): ?ProfileModel
     {
-        $this->setResponses([
-            new Response(404)
-        ]);
+        if (!is_null($responses)) {
+            $this->setResponses($responses);
+        }
 
         $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetProfileRequest($client))->data();
+        return (new GetProfileRequest($client))->data();
+    }
 
+    public function testInvalidResponseMapsToNull(): void
+    {
+        $response = $this->doRequest([new Response(404)]);
         $this->assertNull($response);
     }
 
     public function testValidResponseMapsToProfileModel(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetProfileRequest($client))->data();
-
+        $response = $this->doRequest();
         $this->assertNotNull($response);
         $this->assertInstanceOf(ProfileModel::class, $response);
     }
 
     public function testProfileIdIsAvailable(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetProfileRequest($client))->data();
-
+        $response = $this->doRequest();
         $this->assertEquals(
             $response->getId(),
             $this->contract->data->id
         );
     }
 
-
     public function testProfileNameIsAvailable(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetProfileRequest($client))->data();
-
+        $response = $this->doRequest();
         $this->assertEquals(
             $response->getName(),
             implode(' ', [
@@ -74,8 +71,7 @@ class GetProfileRequestTest extends AbstractTestCase
 
     public function testOrganizationsAreMapped(): void
     {
-        $client = new InternalApiClient('', '', null, $this->client);
-        $response = (new GetProfileRequest($client))->data();
+        $response = $this->doRequest();
 
         $this->assertIsArray($response->getOrganizations());
         $this->assertCount(count($this->contract->included), $response->getOrganizations());
