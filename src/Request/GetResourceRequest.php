@@ -7,7 +7,9 @@ use Coyote\ApiModel\ResourceRepresentationApiModel;
 use Coyote\ApiResponse\GetResourceApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
+use Coyote\RequestLogger;
 use JsonMapper\JsonMapperFactory;
+use Monolog\Logger;
 use stdClass;
 
 class GetResourceRequest
@@ -15,19 +17,30 @@ class GetResourceRequest
     private const PATH = '/resources/%s';
 
     private InternalApiClient $client;
+    private RequestLogger $logger;
+
     private string $resource_id;
 
-    public function __construct(InternalApiClient $client, string $resource_id)
+    public function __construct(InternalApiClient $client, string $resource_id, int $logLevel = Logger::INFO)
     {
         $this->client = $client;
+        $this->logger = new RequestLogger('GetResourceRequest', $logLevel);
         $this->resource_id = $resource_id;
     }
 
     public function data(): ?ResourceModel
     {
-        $json = $this->client->get(sprintf(self::PATH, $this->resource_id));
+        $this->logger->debug("Fetching resource {$this->resource_id}");
+
+        try {
+            $json = $this->client->get(sprintf(self::PATH, $this->resource_id));
+        } catch (\Exception $error) {
+            $this->logger->error("Error fetching resource {$this->resource_id}: " . $error->getMessage());
+            return null;
+        }
 
         if (is_null($json)) {
+            $this->logger->warn("Unexpected null response when fetching resource {$this->resource_id}");
             return null;
         }
 
