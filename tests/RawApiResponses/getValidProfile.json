@@ -1,0 +1,43 @@
+{
+  "data": {
+    "id": "222",
+    "type": "user",
+    "attributes": {
+      "first_name": "John",
+      "last_name": "Doe"
+    },
+    "relationships": {
+      "organizations": {
+        "data": [
+          {
+            "type": "organization",
+            "id": "1"
+          },
+          {
+            "type": "organization",
+            "id": "57"
+          }
+        ]
+      }
+    }
+  },
+  "included": [
+    {
+      "id": "1",
+      "type": "organization",
+      "attributes": {
+        "name": "Museum of Contemporary Art Chicago"
+      }
+    },
+    {
+      "id": "57",
+      "type": "organization",
+      "attributes": {
+        "name": "Museum of Modern Art New York"
+      }
+    }
+  ],
+  "jsonapi": {
+    "version": "1.0"
+  }
+}

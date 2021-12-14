@@ -4,6 +4,7 @@ namespace Coyote;
 
 use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
@@ -16,29 +17,28 @@ class InternalApiClient
     private const METHOD_POST = 'POST';
     private const METHOD_PUT = 'PUT';
 
-    private Client $client;
+    private ClientInterface $client;
 
     private string $endpoint;
     private string $token;
     private ?int $organizationId;
     private string $locale = 'en';
 
-    public function __construct(string $endpoint, string $token, ?int $organizationId)
+    public function __construct(string $endpoint, string $token, ?int $organizationId, ClientInterface $client = null)
     {
         $this->endpoint = $endpoint;
         $this->token = $token;
         $this->organizationId = $organizationId;
 
-        $this->client = new Client();
+        $this->client = $client ?? new Client();
     }
 
     /**
+     * @param string $url
      * @param array $options
      *
      * @return null|stdClass
      * @throws GuzzleException
-     *
-     * @throws Exception
      */
     public function get(string $url, array $options = []): ?stdClass
     {
@@ -53,13 +53,12 @@ class InternalApiClient
     }
 
     /**
+     * @param string $url
      * @param array $payload
      * @param array $options
      *
      * @return null|stdClass
      * @throws GuzzleException
-     *
-     * @throws Exception
      */
     public function post(string $url, array $payload, array $options = []): ?stdClass
     {
@@ -70,12 +69,12 @@ class InternalApiClient
     }
 
     /**
+     * @param string $url
      * @param array $payload
      * @param array $options
      *
      * @return null|stdClass
-     * @throws Exception|GuzzleException
-     *
+     * @throws GuzzleException
      */
     public function put(string $url, array $payload, array $options = []): ?stdClass
     {
@@ -142,10 +141,7 @@ class InternalApiClient
         throw new Exception("Invalid Coyote API response for $url, status $status");
     }
 
-    /**
-     *
-     * @return array
-     */
+    /** @return array */
     private function getRequestHeaders(): array
     {
         return [
