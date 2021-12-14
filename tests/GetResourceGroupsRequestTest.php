@@ -13,7 +13,7 @@ use stdClass;
 /**
  * @covers \Coyote\Request\GetResourceGroupsRequest
  */
-class TestGetResourceGroupsRequest extends AbstractTestCase
+class GetResourceGroupsRequestTest extends AbstractTestCase
 {
     private stdClass $contract;
 
@@ -32,7 +32,7 @@ class TestGetResourceGroupsRequest extends AbstractTestCase
         parent::setUp();
     }
 
-    public function testInValidResponseMapsToNull(): void
+    public function testInvalidResponseMapsToNull(): void
     {
         $this->setResponses([
             new Response(404)

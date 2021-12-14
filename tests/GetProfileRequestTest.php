@@ -11,7 +11,7 @@ use stdClass;
 /**
  * @covers \Coyote\Request\GetProfileRequest
  */
-class TestGetProfileRequest extends AbstractTestCase
+class GetProfileRequestTest extends AbstractTestCase
 {
     private stdClass $contract;
 
@@ -26,7 +26,7 @@ class TestGetProfileRequest extends AbstractTestCase
         parent::setUp();
     }
 
-    public function testInValidResponseMapsToNull(): void
+    public function testInvalidResponseMapsToNull(): void
     {
         $this->setResponses([
             new Response(404)
