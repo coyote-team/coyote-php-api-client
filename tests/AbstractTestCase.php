@@ -15,11 +15,15 @@ class AbstractTestCase extends TestCase
 
     public function setUp(): void
     {
-        $mock = new MockHandler($this->responses);
+        $this->setResponses($this->responses);
+        parent::setUp();
+    }
+
+    public function setResponses(array $responses): void
+    {
+        $mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($mock);
         $this->client = new Client(['handler' => $handlerStack]);
-
-        parent::setUp();
     }
 
     public function getApiContractJson(string $name): string

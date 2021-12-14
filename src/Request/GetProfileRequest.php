@@ -7,7 +7,9 @@ use Coyote\ApiModel\ProfileApiModel;
 use Coyote\ApiResponse\GetProfileApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ProfileModel;
+use Coyote\RequestLogger;
 use JsonMapper\JsonMapperFactory;
+use Monolog\Logger;
 use stdClass;
 
 class GetProfileRequest
@@ -15,18 +17,28 @@ class GetProfileRequest
     private const PATH = '/profile/';
 
     private InternalApiClient $client;
+    private RequestLogger $logger;
 
-    public function __construct(InternalApiClient $client)
+    public function __construct(InternalApiClient $client, int $logLevel = Logger::INFO)
     {
         $this->client = $client;
+        $this->logger = new RequestLogger('GetProfileRequest', $logLevel);
     }
 
     /** @return ProfileModel|null */
     public function data(): ?ProfileModel
     {
-        $json = $this->client->get(self::PATH);
+        $this->logger->debug('Fetching profile');
+
+        try {
+            $json = $this->client->get(self::PATH);
+        } catch (\Exception $error) {
+            $this->logger->error('Error fetching profile: ' . $error->getMessage());
+            return null;
+        }
 
         if (is_null($json)) {
+            $this->logger->warn('Unexpected null response when fetching profile');
             return null;
         }
 

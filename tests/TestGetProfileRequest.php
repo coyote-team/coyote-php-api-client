@@ -26,6 +26,18 @@ class TestGetProfileRequest extends AbstractTestCase
         parent::setUp();
     }
 
+    public function testInValidResponseMapsToNull(): void
+    {
+        $this->setResponses([
+            new Response(404)
+        ]);
+
+        $client = new InternalApiClient('', '', null, $this->client);
+        $response = (new GetProfileRequest($client))->data();
+
+        $this->assertNull($response);
+    }
+
     public function testValidResponseMapsToProfileModel(): void
     {
         $client = new InternalApiClient('', '', null, $this->client);

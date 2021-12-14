@@ -4,7 +4,6 @@ namespace Coyote;
 
 use Exception;
 use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use stdClass;
@@ -17,14 +16,14 @@ class InternalApiClient
     private const METHOD_POST = 'POST';
     private const METHOD_PUT = 'PUT';
 
-    private ClientInterface $client;
+    private Client $client;
 
     private string $endpoint;
     private string $token;
     private ?int $organizationId;
     private string $locale = 'en';
 
-    public function __construct(string $endpoint, string $token, ?int $organizationId, ClientInterface $client = null)
+    public function __construct(string $endpoint, string $token, ?int $organizationId, Client $client = null)
     {
         $this->endpoint = $endpoint;
         $this->token = $token;
@@ -38,7 +37,7 @@ class InternalApiClient
      * @param array $options
      *
      * @return null|stdClass
-     * @throws GuzzleException
+     * @throws Exception
      */
     public function get(string $url, array $options = []): ?stdClass
     {
@@ -58,7 +57,7 @@ class InternalApiClient
      * @param array $options
      *
      * @return null|stdClass
-     * @throws GuzzleException
+     * @throws Exception
      */
     public function post(string $url, array $payload, array $options = []): ?stdClass
     {
@@ -74,7 +73,7 @@ class InternalApiClient
      * @param array $options
      *
      * @return null|stdClass
-     * @throws GuzzleException
+     * @throws Exception
      */
     public function put(string $url, array $payload, array $options = []): ?stdClass
     {
@@ -96,7 +95,6 @@ class InternalApiClient
      * @param array $options
      *
      * @return null|stdClass
-     * @throws GuzzleException
      * @throws Exception
      */
     private function request(string $url, array $options = []): ?stdClass
@@ -107,21 +105,25 @@ class InternalApiClient
             ['http_errors' => false],
         );
 
-        switch ($options['method']) {
-            case self::METHOD_GET:
-                $response = $this->client->get($url, $options);
-                break;
+        try {
+            switch ($options['method']) {
+                case self::METHOD_GET:
+                    $response = $this->client->get($url, $options);
+                    break;
 
-            case self::METHOD_POST:
-                $response = $this->client->post($url, $options);
-                break;
+                case self::METHOD_POST:
+                    $response = $this->client->post($url, $options);
+                    break;
 
-            case self::METHOD_PUT:
-                $response = $this->client->put($url, $options);
-                break;
+                case self::METHOD_PUT:
+                    $response = $this->client->put($url, $options);
+                    break;
 
-            default:
-                throw new Exception('Invalid Coyote API request');
+                default:
+                    throw new Exception("Invalid request method {$options['method']}");
+            }
+        } catch (GuzzleException $e) {
+            throw new Exception("Guzzle exception - {$e->getMessage()}");
         }
 
         $body = (string) $response->getBody();
