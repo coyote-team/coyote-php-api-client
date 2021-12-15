@@ -10,7 +10,7 @@ use GuzzleHttp\Psr7\Response;
 use stdClass;
 
 /**
- * @covers \Coyote\Request\GetProfileRequest
+ * @covers \Coyote\Request\GetResourceRequest
  */
 class GetResourceRequestTest extends AbstractTestCase
 {
@@ -92,5 +92,4 @@ class GetResourceRequestTest extends AbstractTestCase
         $this->assertNotNull($organization);
         $this->assertInstanceOf(OrganizationModel::class, $organization);
     }
-
 }

@@ -1,0 +1,177 @@
+{
+  "data": [
+    {
+      "id": "22786",
+      "type": "resource",
+      "attributes": {
+        "id": 22786,
+        "name": "Chamilla Foxx 1.jpg",
+        "resource_type": "image",
+        "canonical_id": "5e5fc59a563cd805091dcde4",
+        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5e5fc59a563cd805091dcde4.jpg",
+        "created_at": "2020-05-06T14:41:46.189Z",
+        "updated_at": "2020-05-06T14:42:18.036Z",
+        "resource_group": null
+      },
+      "relationships": {
+        "organization": {
+          "data": {
+            "type": "organization",
+            "id": "1"
+          }
+        },
+        "resource_groups": {
+          "meta": {
+            "included": false
+          }
+        },
+        "representations": {
+          "data": []
+        }
+      },
+      "links": {
+        "coyote": "http://staging.coyote.pics/organizations/1/resources/22786"
+      }
+    },
+    {
+      "id": "22785",
+      "type": "resource",
+      "attributes": {
+        "id": 22785,
+        "name": "FY19_FamilyDay_Nov (155).JPG",
+        "resource_type": "image",
+        "canonical_id": "5defbff0da2d5a0509c56396",
+        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5defbff0da2d5a0509c56396.jpg",
+        "created_at": "2020-05-06T14:41:41.717Z",
+        "updated_at": "2020-05-06T14:42:26.671Z",
+        "resource_group": null
+      },
+      "relationships": {
+        "organization": {
+          "data": {
+            "type": "organization",
+            "id": "1"
+          }
+        },
+        "resource_groups": {
+          "meta": {
+            "included": false
+          }
+        },
+        "representations": {
+          "data": []
+        }
+      },
+      "links": {
+        "coyote": "http://staging.coyote.pics/organizations/1/resources/22785"
+      }
+    },
+    {
+      "id": "22784",
+      "type": "resource",
+      "attributes": {
+        "id": 22784,
+        "name": "WhatRemians_20181205_133.jpg",
+        "resource_type": "image",
+        "canonical_id": "5eb03f72da2d5a04f9b03496",
+        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5eb03f72da2d5a04f9b03496.jpg",
+        "created_at": "2020-05-06T14:33:10.893Z",
+        "updated_at": "2020-05-06T14:34:24.065Z",
+        "resource_group": null
+      },
+      "relationships": {
+        "organization": {
+          "data": {
+            "type": "organization",
+            "id": "1"
+          }
+        },
+        "resource_groups": {
+          "meta": {
+            "included": false
+          }
+        },
+        "representations": {
+          "data": []
+        }
+      },
+      "links": {
+        "coyote": "http://staging.coyote.pics/organizations/1/resources/22784"
+      }
+    },
+    {
+      "id": "22783",
+      "type": "resource",
+      "attributes": {
+        "id": 22783,
+        "name": "WhatRemians_20181205_226.jpg",
+        "resource_type": "image",
+        "canonical_id": "5eb03f6c6fe3d004f98b7ea3",
+        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5eb03f6c6fe3d004f98b7ea3.jpg",
+        "created_at": "2020-05-06T14:33:08.057Z",
+        "updated_at": "2020-05-06T14:34:30.172Z",
+        "resource_group": null
+      },
+      "relationships": {
+        "organization": {
+          "data": {
+            "type": "organization",
+            "id": "1"
+          }
+        },
+        "resource_groups": {
+          "meta": {
+            "included": false
+          }
+        },
+        "representations": {
+          "data": []
+        }
+      },
+      "links": {
+        "coyote": "http://staging.coyote.pics/organizations/1/resources/22783"
+      }
+    },
+    {
+      "id": "22782",
+      "type": "resource",
+      "attributes": {
+        "id": 22782,
+        "name": "WhatRemians_20181205_229.jpg",
+        "resource_type": "image",
+        "canonical_id": "5eb03f646fe3d004f78b8927",
+        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5eb03f646fe3d004f78b8927.jpg",
+        "created_at": "2020-05-06T14:33:05.612Z",
+        "updated_at": "2020-05-06T14:34:37.464Z",
+        "resource_group": null
+      },
+      "relationships": {
+        "organization": {
+          "data": {
+            "type": "organization",
+            "id": "1"
+          }
+        },
+        "resource_groups": {
+          "meta": {
+            "included": false
+          }
+        },
+        "representations": {
+          "data": []
+        }
+      },
+      "links": {
+        "coyote": "http://staging.coyote.pics/organizations/1/resources/22782"
+      }
+    }
+  ],
+  "links": {
+    "self": "https://staging.coyote.pics/api/v1/organizations/1/resources",
+    "first": "https://staging.coyote.pics/api/v1/organizations/1/resources?page%5Bnumber%5D=1&page%5Bsize%5D=50",
+    "next": "https://staging.coyote.pics/api/v1/organizations/1/resources?page%5Bnumber%5D=2&page%5Bsize%5D=50"
+  },
+  "jsonapi": {
+    "version": "1.0"
+  }
+}
