@@ -3,8 +3,8 @@
 namespace Tests;
 
 use Coyote\InternalApiClient;
-use Coyote\Model\ProfileModel;
-use Coyote\Request\GetProfileRequest;
+use Coyote\Model\RepresentationModel;
+use Coyote\Request\GetResourceRepresentationsRequest;
 use GuzzleHttp\Psr7\Response;
 use stdClass;
 
@@ -30,14 +30,15 @@ class GetResourceRepresentationsRequestTest extends AbstractTestCase
         parent::setUp();
     }
 
-    private function doRequest(?array $responses = null): ?ProfileModel
+    /** @return RepresentationModel[]|null */
+    private function doRequest(?array $responses = null): ?array
     {
         if (!is_null($responses)) {
             $this->setResponses($responses);
         }
 
         $client = new InternalApiClient('', '', null, $this->client);
-        return (new GetProfileRequest($client))->data();
+        return (new GetResourceRepresentationsRequest($client, 12345))->data();
     }
 
     public function testInvalidResponseMapsToNull(): void
@@ -46,43 +47,56 @@ class GetResourceRepresentationsRequestTest extends AbstractTestCase
         $this->assertNull($response);
     }
 
-    public function testValidResponseMapsToProfileModel(): void
+    public function testValidResponseMapsToRepresentationModels(): void
     {
         $response = $this->doRequest();
         $this->assertNotNull($response);
-        $this->assertInstanceOf(ProfileModel::class, $response);
+
+        /** @var RepresentationModel $model */
+        foreach ($response as $model) {
+            $this->assertInstanceOf(RepresentationModel::class, $model);
+        }
     }
 
-    public function testProfileIdIsAvailable(): void
+    public function testRepresentationIdIsAvailable(): void
     {
-        $response = $this->doRequest();
-        $this->assertEquals(
-            $response->getId(),
-            $this->contract->data->id
-        );
+        $representation = $this->doRequest()[0];
+        $this->assertEquals($representation->getId(), $this->contract->data[0]->id);
     }
 
-    public function testProfileNameIsAvailable(): void
+    public function testRepresentationTextIsAvailable(): void
     {
-        $response = $this->doRequest();
-        $this->assertEquals(
-            $response->getName(),
-            implode(' ', [
-                $this->contract->data->attributes->first_name,
-                $this->contract->data->attributes->last_name])
-        );
+        $representation = $this->doRequest()[0];
+        $this->assertEquals($representation->getText(), $this->contract->data[0]->attributes->text);
     }
 
-    public function testOrganizationsAreMapped(): void
+    public function testRepresentationUriIsAvailable(): void
     {
-        $response = $this->doRequest();
+        $representation = $this->doRequest()[0];
+        $this->assertEquals($representation->getUri(), $this->contract->data[0]->attributes->content_uri);
+    }
 
-        $this->assertIsArray($response->getOrganizations());
-        $this->assertCount(count($this->contract->included), $response->getOrganizations());
+    public function testRepresentationLanguageIsAvailable(): void
+    {
+        $representation = $this->doRequest()[0];
+        $this->assertEquals($representation->getLanguage(), $this->contract->data[0]->attributes->language);
+    }
 
-        $this->assertEquals(
-            $response->getOrganizations()[0]->getName(),
-            $this->contract->included[0]->attributes->name
-        );
+    public function testRepresentationStatusIsAvailable(): void
+    {
+        $representation = $this->doRequest()[0];
+        $this->assertEquals($representation->getStatus(), $this->contract->data[0]->attributes->status);
+    }
+
+    public function testRepresentationOrdinalityIsAvailable(): void
+    {
+        $representation = $this->doRequest()[0];
+        $this->assertEquals($representation->getOrdinality(), $this->contract->data[0]->attributes->ordinality);
+    }
+
+    public function testRepresentationMetumIsAvailable(): void
+    {
+        $representation = $this->doRequest()[0];
+        $this->assertEquals($representation->getMetum(), $this->contract->data[0]->attributes->metum);
     }
 }

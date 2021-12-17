@@ -1,23 +1,23 @@
 {
   "data": [
     {
-      "id": "22786",
+      "id": "421938",
       "type": "resource",
       "attributes": {
-        "id": 22786,
-        "name": "Chamilla Foxx 1.jpg",
+        "id": 421938,
+        "name": "Sample book",
         "resource_type": "image",
-        "canonical_id": "5e5fc59a563cd805091dcde4",
-        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5e5fc59a563cd805091dcde4.jpg",
-        "created_at": "2020-05-06T14:41:46.189Z",
-        "updated_at": "2020-05-06T14:42:18.036Z",
-        "resource_group": null
+        "canonical_id": "279664",
+        "source_uri": "https://images.collection.cooperhewitt.org/a279664_79516fc85e5d931f_b.jpg",
+        "created_at": "2021-11-19T17:39:56.873Z",
+        "updated_at": "2021-11-19T17:39:56.873Z",
+        "resource_group": "Test Import"
       },
       "relationships": {
         "organization": {
           "data": {
             "type": "organization",
-            "id": "1"
+            "id": "65"
           }
         },
         "resource_groups": {
@@ -26,31 +26,36 @@
           }
         },
         "representations": {
-          "data": []
+          "data": [
+            {
+              "type": "representation",
+              "id": "219814"
+            }
+          ]
         }
       },
       "links": {
-        "coyote": "http://staging.coyote.pics/organizations/1/resources/22786"
+        "coyote": "http://staging.coyote.pics/organizations/65/resources/421938"
       }
     },
     {
-      "id": "22785",
+      "id": "421937",
       "type": "resource",
       "attributes": {
-        "id": 22785,
-        "name": "FY19_FamilyDay_Nov (155).JPG",
+        "id": 421937,
+        "name": "Medal, Galerie m\\\\u00e9tallique des grands hommes fran\\\\u00e7ais (Great Men of France)",
         "resource_type": "image",
-        "canonical_id": "5defbff0da2d5a0509c56396",
-        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5defbff0da2d5a0509c56396.jpg",
-        "created_at": "2020-05-06T14:41:41.717Z",
-        "updated_at": "2020-05-06T14:42:26.671Z",
-        "resource_group": null
+        "canonical_id": "156010",
+        "source_uri": "https://images.collection.cooperhewitt.org/a156010_fbf9771952873556_b.jpg",
+        "created_at": "2021-11-19T17:39:56.654Z",
+        "updated_at": "2021-11-19T17:39:56.654Z",
+        "resource_group": "Test Import"
       },
       "relationships": {
         "organization": {
           "data": {
             "type": "organization",
-            "id": "1"
+            "id": "65"
           }
         },
         "resource_groups": {
@@ -59,31 +64,36 @@
           }
         },
         "representations": {
-          "data": []
+          "data": [
+            {
+              "type": "representation",
+              "id": "219812"
+            }
+          ]
         }
       },
       "links": {
-        "coyote": "http://staging.coyote.pics/organizations/1/resources/22785"
+        "coyote": "http://staging.coyote.pics/organizations/65/resources/421937"
       }
     },
     {
-      "id": "22784",
+      "id": "421936",
       "type": "resource",
       "attributes": {
-        "id": 22784,
-        "name": "WhatRemians_20181205_133.jpg",
+        "id": 421936,
+        "name": "Bracelet",
         "resource_type": "image",
-        "canonical_id": "5eb03f72da2d5a04f9b03496",
-        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5eb03f72da2d5a04f9b03496.jpg",
-        "created_at": "2020-05-06T14:33:10.893Z",
-        "updated_at": "2020-05-06T14:34:24.065Z",
-        "resource_group": null
+        "canonical_id": "310768",
+        "source_uri": "https://images.collection.cooperhewitt.org/a310768_5a30b06fe067ad23_b.jpg",
+        "created_at": "2021-11-19T17:39:56.452Z",
+        "updated_at": "2021-11-19T17:39:56.452Z",
+        "resource_group": "Test Import"
       },
       "relationships": {
         "organization": {
           "data": {
             "type": "organization",
-            "id": "1"
+            "id": "65"
           }
         },
         "resource_groups": {
@@ -96,73 +106,7 @@
         }
       },
       "links": {
-        "coyote": "http://staging.coyote.pics/organizations/1/resources/22784"
-      }
-    },
-    {
-      "id": "22783",
-      "type": "resource",
-      "attributes": {
-        "id": 22783,
-        "name": "WhatRemians_20181205_226.jpg",
-        "resource_type": "image",
-        "canonical_id": "5eb03f6c6fe3d004f98b7ea3",
-        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5eb03f6c6fe3d004f98b7ea3.jpg",
-        "created_at": "2020-05-06T14:33:08.057Z",
-        "updated_at": "2020-05-06T14:34:30.172Z",
-        "resource_group": null
-      },
-      "relationships": {
-        "organization": {
-          "data": {
-            "type": "organization",
-            "id": "1"
-          }
-        },
-        "resource_groups": {
-          "meta": {
-            "included": false
-          }
-        },
-        "representations": {
-          "data": []
-        }
-      },
-      "links": {
-        "coyote": "http://staging.coyote.pics/organizations/1/resources/22783"
-      }
-    },
-    {
-      "id": "22782",
-      "type": "resource",
-      "attributes": {
-        "id": 22782,
-        "name": "WhatRemians_20181205_229.jpg",
-        "resource_type": "image",
-        "canonical_id": "5eb03f646fe3d004f78b8927",
-        "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/5eb03f646fe3d004f78b8927.jpg",
-        "created_at": "2020-05-06T14:33:05.612Z",
-        "updated_at": "2020-05-06T14:34:37.464Z",
-        "resource_group": null
-      },
-      "relationships": {
-        "organization": {
-          "data": {
-            "type": "organization",
-            "id": "1"
-          }
-        },
-        "resource_groups": {
-          "meta": {
-            "included": false
-          }
-        },
-        "representations": {
-          "data": []
-        }
-      },
-      "links": {
-        "coyote": "http://staging.coyote.pics/organizations/1/resources/22782"
+        "coyote": "http://staging.coyote.pics/organizations/65/resources/421936"
       }
     }
   ],

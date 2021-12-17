@@ -6,8 +6,17 @@ use Coyote\ApiModel\ResourceRepresentationApiModel;
 
 class RepresentationModel
 {
-    public string $id;
-    public string $status;
+    private string $id;
+    private string $status;
+    private int $ordinality;
+
+    /**
+     * @return int
+     */
+    public function getOrdinality(): int
+    {
+        return $this->ordinality;
+    }
 
     /**
      * @return string
@@ -64,11 +73,11 @@ class RepresentationModel
     {
         return $this->author;
     }
-    public ?string $uri;
-    public string $language;
-    public string $text;
-    public string $metum;
-    public string $author;
+    private ?string $uri;
+    private string $language;
+    private string $text;
+    private string $metum;
+    private string $author;
 
     public function __construct(ResourceRepresentationApiModel $model)
     {
@@ -79,5 +88,6 @@ class RepresentationModel
         $this->text = $model->attributes->text;
         $this->metum = $model->attributes->metum;
         $this->author = $model->attributes->author;
+        $this->ordinality = $model->attributes->ordinality;
     }
 }
