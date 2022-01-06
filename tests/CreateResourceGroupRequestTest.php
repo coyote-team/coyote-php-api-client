@@ -68,17 +68,20 @@ class CreateResourceGroupRequestTest extends AbstractTestCase
 
     public function testGroupWebhookUriIsCorrect(): void
     {
-        $contract = $this->getApiContract('createValidResourceGroupWithWebhookUri');
+        // NOTE this does not properly test the payload being sent across correctly.
+
+        $responseData = $this->getApiContract('createValidResourceGroup');
+        $responseData->data->attributes->webhook_uri = 'https://resource-groups-r-us.net/api';
 
         $group = $this->doRequest([
             new Response(
                 200,
                 ['Content-Type' => 'application/json'],
-                $this->getApiContractJson('createValidResourceGroupWithWebhookUri')
+                json_encode($responseData)
             )
         ], 'https://resource-groups-r-us.net/api');
 
-        $this->assertEquals($group->getUri(), $contract->data->attributes->webhook_uri);
+        $this->assertEquals($group->getUri(), $responseData->data->attributes->webhook_uri);
     }
 
     public function testGroupWebhookUriIsNullWhenNotProvided(): void
