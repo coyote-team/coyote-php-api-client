@@ -3,7 +3,7 @@
     "description": "A client for the Coyote.pics image description service",
     "type": "library",
     "require": {
-        "guzzlehttp/guzzle": "^7.4.1",
+        "guzzlehttp/guzzle": "6.5.*",
         "json-mapper/json-mapper": "^2.9.1",
         "php": ">=7.4",
         "ext-json": "*",
