@@ -2,6 +2,7 @@
 
 namespace Coyote;
 
+use Coyote\Model\MembershipModel;
 use Coyote\Model\OrganizationModel;
 use Coyote\Model\ProfileModel;
 use Coyote\Model\ResourceGroupModel;
@@ -11,6 +12,7 @@ use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
 use Coyote\Request\CreateResourceGroupRequest;
 use Coyote\Request\CreateResourcesRequest;
+use Coyote\Request\GetMembershipsRequest;
 use Coyote\Request\GetProfileRequest;
 use Coyote\Request\GetResourceGroupsRequest;
 use Coyote\Request\GetResourceRequest;
@@ -57,6 +59,17 @@ class HelperFunctions
     {
         $client = new InternalApiClient($endpoint, $token, null);
         return (new GetProfileRequest($client))->data();
+    }
+
+    /**
+     * @param string $endpoint
+     * @param string $token
+     * @return MembershipModel[]|null
+     */
+    public static function getOrganizationMemberships(string $endpoint, string $token, int $organizationId): ?array
+    {
+        $client = new InternalApiClient($endpoint, $token, $organizationId);
+        return (new GetMembershipsRequest($client))->data();
     }
 
     /** @return OrganizationModel[]|null */
