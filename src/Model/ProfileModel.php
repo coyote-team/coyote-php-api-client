@@ -32,6 +32,15 @@ class ProfileModel
     {
         return $this->organizations;
     }
+
+    /**
+     * @return MembershipModel[]
+     */
+    public function getMemberships(): array
+    {
+        return $this->memberships;
+    }
+
     private string $name;
 
     /** @var array<OrganizationModel> */

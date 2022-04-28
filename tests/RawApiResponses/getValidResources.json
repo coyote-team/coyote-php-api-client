@@ -110,6 +110,15 @@
       }
     }
   ],
+  "included": [
+    {
+      "id": "1",
+      "type": "organization",
+      "attributes": {
+        "name": "Acme Museum"
+      }
+    }
+  ],
   "links": {
     "self": "https://staging.coyote.pics/api/v1/organizations/1/resources",
     "first": "https://staging.coyote.pics/api/v1/organizations/1/resources?page%5Bnumber%5D=1&page%5Bsize%5D=50",

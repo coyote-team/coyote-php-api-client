@@ -35,7 +35,7 @@ class GetResourcesRequestTest extends AbstractTestCase
             $this->setResponses($responses);
         }
 
-        $client = new InternalApiClient('', '', null, $this->client);
+        $client = new InternalApiClient('', '', 1, $this->client);
         return (new GetResourcesRequest($client))->data();
     }
 
@@ -49,7 +49,7 @@ class GetResourcesRequestTest extends AbstractTestCase
     {
         $response = $this->doRequest();
         $this->assertIsArray($response);
-        $this->assertInstanceOf(ResourceModel::class, $response);
+        $this->assertInstanceOf(ResourceModel::class, $response[0]);
 
         $this->assertCount(count($this->contract->data), $response);
 

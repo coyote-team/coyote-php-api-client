@@ -74,11 +74,32 @@ class GetProfileRequestTest extends AbstractTestCase
         $response = $this->doRequest();
 
         $this->assertIsArray($response->getOrganizations());
-        $this->assertCount(count($this->contract->included), $response->getOrganizations());
+
+        // one is a memberships
+        $this->assertCount(count($this->contract->included) - 1, $response->getOrganizations());
 
         $this->assertEquals(
             $response->getOrganizations()[0]->getName(),
             $this->contract->included[0]->attributes->name
         );
     }
+
+    public function testMembershipsAreMapped(): void
+    {
+        $response = $this->doRequest();
+        $memberships = $response->getMemberships();
+
+        $this->assertIsArray($memberships);
+
+        // expect a single membership
+        $this->assertCount(1, $memberships);
+
+        $membership = array_shift($memberships);
+
+        $this->assertEquals(
+            $membership->getEmail(),
+            $this->contract->included[11]->attributes->email
+        );
+    }
+
 }

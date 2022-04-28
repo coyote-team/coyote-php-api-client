@@ -28,7 +28,7 @@ class AbstractTestCase extends TestCase
 
     public function getApiContractJson(string $name): string
     {
-        $jsonFromFile = $this->getJsonFromFile('/tests/RawApiResponses/' . $name);
+        $jsonFromFile = $this->getJsonFromFile(__DIR__ . '/RawApiResponses/' . $name);
 
         self::assertNotNull($jsonFromFile);
 
@@ -51,7 +51,7 @@ class AbstractTestCase extends TestCase
      */
     public function getJsonFromFile(string $path): ?string
     {
-        $contents = file_get_contents(getcwd() . $path . '.json');
+        $contents = file_get_contents($path . '.json');
 
         if ($contents === false) {
             return null;

@@ -9,7 +9,15 @@ use Coyote\ApiModel\ResourceRepresentationApiModel;
 class ResourceModel
 {
     private string $id;
-    private string $canonical_id;
+    private ?string $canonical_id;
+    private string $name;
+    private string $type;
+    private string $source_uri;
+
+    private OrganizationModel $organization;
+
+    /** @var array<RepresentationModel> */
+    private array $representations;
 
     /**
      * @return string
@@ -22,7 +30,7 @@ class ResourceModel
     /**
      * @return string
      */
-    public function getCanonicalId(): string
+    public function getCanonicalId(): ?string
     {
         return $this->canonical_id;
     }
@@ -52,9 +60,9 @@ class ResourceModel
     }
 
     /**
-     * @return OrganizationModel
+     * @return OrganizationModel|null
      */
-    public function getOrganization(): OrganizationModel
+    public function getOrganization(): ?OrganizationModel
     {
         return $this->organization;
     }
@@ -66,25 +74,15 @@ class ResourceModel
     {
         return $this->representations;
     }
-    private string $name;
-    private string $type;
-    private string $source_uri;
-
-    private OrganizationModel $organization;
-
-    /** @var array<RepresentationModel> */
-    private array $representations;
-
-    // TODO ResourceGroup relationship
 
     /**
      * @param ResourceApiModel $model
-     * @param OrganizationApiModel $organizationApiModel
+     * @param OrganizationApiModel|null $organizationApiModel
      * @param array<ResourceRepresentationApiModel> $representations
      */
     public function __construct(
         ResourceApiModel $model,
-        OrganizationApiModel $organizationApiModel,
+        ?OrganizationApiModel $organizationApiModel,
         array $representations
     ) {
         $this->id = $model->id;
@@ -93,7 +91,9 @@ class ResourceModel
         $this->type = $model->attributes->resource_type;
         $this->source_uri = $model->attributes->source_uri;
 
-        $this->organization = new OrganizationModel($organizationApiModel);
+        if (!is_null($organizationApiModel)) {
+            $this->organization = new OrganizationModel($organizationApiModel);
+        }
 
         $this->representations = array_map(function ($resourceRepresentationApiModel) {
             return new RepresentationModel($resourceRepresentationApiModel);

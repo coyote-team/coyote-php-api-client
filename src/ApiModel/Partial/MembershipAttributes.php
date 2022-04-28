@@ -9,4 +9,5 @@ class MembershipAttributes
     public string $last_name;
     public string $email;
     public string $role;
+    public string $organization_id;
 }

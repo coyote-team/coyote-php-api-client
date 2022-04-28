@@ -8,32 +8,44 @@ use Coyote\ApiResponse\CreateResourceApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
 use Coyote\Payload\CreateResourcePayload;
-use JetBrains\PhpStorm\ArrayShape;
+use Coyote\RequestLogger;
 use JsonMapper\JsonMapperFactory;
+use Monolog\Logger;
 use stdClass;
 
 class CreateResourceRequest
 {
     private const PATH = '/resources/';
 
+    private RequestLogger $logger;
     private CreateResourcePayload $payload;
     private InternalApiClient $apiClient;
 
-    public function __construct(InternalApiClient $apiClient, CreateResourcePayload $payload)
-    {
+    public function __construct(
+        InternalApiClient $apiClient,
+        CreateResourcePayload $payload,
+        int $logLevel = Logger::INFO
+    ) {
         $this->apiClient = $apiClient;
         $this->payload = $payload;
+        $this->logger = new RequestLogger('CreateResourceRequest', $logLevel);
     }
 
     public function perform(): ?ResourceModel
     {
-        $json = $this->apiClient->post(
-            self::PATH,
-            $this->marshallPayload(),
-            [InternalApiClient::INCLUDE_ORG_ID => true]
-        );
+        try {
+            $json = $this->apiClient->post(
+                self::PATH,
+                $this->marshallPayload(),
+                [InternalApiClient::INCLUDE_ORG_ID => true]
+            );
+        } catch (\Exception $error) {
+            $this->logger->error("Error creating resource {$this->payload->source_uri}: " . $error->getMessage());
+            return null;
+        }
 
         if (is_null($json)) {
+            $this->logger->warn("Unexpected null response when creating resource {$this->payload->source_uri}");
             return null;
         }
 
@@ -64,6 +76,7 @@ class CreateResourceRequest
 
         return $organizationApiModel;
     }
+
 
     /** @return ResourceRepresentationApiModel[]
      */

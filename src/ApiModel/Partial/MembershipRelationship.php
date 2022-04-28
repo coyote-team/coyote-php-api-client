@@ -2,8 +2,9 @@
 
 namespace Coyote\ApiModel\Partial;
 
-class RepresentationRelationship
+class MembershipRelationship
 {
     /** @var Relationship[] */
     public array $data;
+
 }

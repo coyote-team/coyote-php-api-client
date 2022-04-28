@@ -9,7 +9,6 @@ use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
-use JetBrains\PhpStorm\ArrayShape;
 use JsonMapper\JsonMapperFactory;
 
 class CreateResourcesRequest

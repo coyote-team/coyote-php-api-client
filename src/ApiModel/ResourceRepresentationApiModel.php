@@ -10,8 +10,6 @@ class ResourceRepresentationApiModel extends AbstractResourceRelatedApiModel
 {
     public const TYPE = 'representation';
 
-    public string $id;
-    public string $type;
     public ResourceRepresentationAttributes $attributes;
 
     // TODO perhaps abstract into class

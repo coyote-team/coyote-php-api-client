@@ -4,9 +4,8 @@ namespace Coyote\ApiModel;
 
 use Coyote\ApiModel\Partial\MembershipAttributes;
 
-class MembershipApiModel
+class MembershipApiModel extends AbstractResourceRelatedApiModel
 {
-    public string $id;
-    public string $type;
+    public const TYPE = 'membership';
     public MembershipAttributes $attributes;
 }

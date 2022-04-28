@@ -10,10 +10,10 @@ use Coyote\ApiModel\ResourceRepresentationApiModel;
 
 class GetResourcesApiResponse
 {
-    /** @var array<ResourceApiModel> */
+    /** @var ResourceApiModel[] */
     public array $data;
 
-    /** @var array<OrganizationApiModel|ResourceRepresentationApiModel> */
+    /** @var OrganizationApiModel[]|ResourceRepresentationApiModel[] */
     public array $included;
 
     public ResourceLinks $links;
