@@ -14,10 +14,36 @@ class ResourceModel
     private string $type;
     private string $source_uri;
 
-    private OrganizationModel $organization;
+    private ?OrganizationModel $organization;
 
     /** @var array<RepresentationModel> */
     private array $representations;
+
+    /**
+     * @param ResourceApiModel $model
+     * @param OrganizationApiModel|null $organizationApiModel
+     * @param array<ResourceRepresentationApiModel> $representations
+     */
+    public function __construct(
+        ResourceApiModel $model,
+        ?OrganizationApiModel $organizationApiModel,
+        array $representations
+    ) {
+        $this->id = $model->id;
+        $this->canonical_id = $model->attributes->canonical_id;
+        $this->name = $model->attributes->name;
+        $this->type = $model->attributes->resource_type;
+        $this->source_uri = $model->attributes->source_uri;
+        $this->organization = null;
+
+        if (!is_null($organizationApiModel)) {
+            $this->organization = new OrganizationModel($organizationApiModel);
+        }
+
+        $this->representations = array_map(function ($resourceRepresentationApiModel) {
+            return new RepresentationModel($resourceRepresentationApiModel);
+        }, $representations);
+    }
 
     /**
      * @return string
@@ -73,30 +99,5 @@ class ResourceModel
     public function getRepresentations(): array
     {
         return $this->representations;
-    }
-
-    /**
-     * @param ResourceApiModel $model
-     * @param OrganizationApiModel|null $organizationApiModel
-     * @param array<ResourceRepresentationApiModel> $representations
-     */
-    public function __construct(
-        ResourceApiModel $model,
-        ?OrganizationApiModel $organizationApiModel,
-        array $representations
-    ) {
-        $this->id = $model->id;
-        $this->canonical_id = $model->attributes->canonical_id;
-        $this->name = $model->attributes->name;
-        $this->type = $model->attributes->resource_type;
-        $this->source_uri = $model->attributes->source_uri;
-
-        if (!is_null($organizationApiModel)) {
-            $this->organization = new OrganizationModel($organizationApiModel);
-        }
-
-        $this->representations = array_map(function ($resourceRepresentationApiModel) {
-            return new RepresentationModel($resourceRepresentationApiModel);
-        }, $representations);
     }
 }

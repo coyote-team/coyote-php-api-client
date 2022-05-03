@@ -19,7 +19,7 @@ use Coyote\Request\GetResourceRequest;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 
-class HelperFunctions
+class CoyoteApiClientHelperFunctions
 {
     public static function getResourceGroupByUri(
         string $endpoint,

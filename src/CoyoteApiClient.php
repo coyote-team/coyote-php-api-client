@@ -6,6 +6,10 @@ use Coyote\Model\ProfileModel;
 use Coyote\Model\RepresentationModel;
 use Coyote\Model\ResourceGroupModel;
 use Coyote\Model\ResourceModel;
+use Coyote\Payload\CreateResourcePayload;
+use Coyote\Payload\CreateResourcesPayload;
+use Coyote\Request\CreateResourceRequest;
+use Coyote\Request\CreateResourcesRequest;
 use Coyote\Request\GetProfileRequest;
 use Coyote\Request\GetResourceGroupsRequest;
 use Coyote\Request\GetResourceRepresentationsRequest;
@@ -27,7 +31,7 @@ class CoyoteApiClient
         return (new GetProfileRequest($this->apiClient))->data();
     }
 
-    /** @return ResourceModel[]|null * */
+    /** @return ResourceModel[]|null */
     public function getResources(): ?array
     {
         return (new GetResourcesRequest($this->apiClient))->data();
@@ -38,14 +42,15 @@ class CoyoteApiClient
         return (new GetResourceRequest($this->apiClient, $id))->data();
     }
 
-    public function createResource(): void
+    public function createResource(CreateResourcePayload $payload): ?ResourceModel
     {
-        throw new Exception("createResource is not yet implemented.");
+        return (new CreateResourceRequest($this->apiClient, $payload))->perform();
     }
 
-    public function createResources(): void
+    /** @return ResourceModel[]|null */
+    public function createResources(CreateResourcesPayload $payload): ?array
     {
-        throw new Exception("createResources is not yet implemented.");
+        return (new CreateResourcesRequest($this->apiClient, $payload))->perform();
     }
 
     public function updateResource(string $id): void
