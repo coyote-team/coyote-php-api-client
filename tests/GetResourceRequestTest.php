@@ -92,4 +92,13 @@ class GetResourceRequestTest extends AbstractTestCase
         $this->assertNotNull($organization);
         $this->assertInstanceOf(OrganizationModel::class, $organization);
     }
+
+    public function testGetMetumRepresentationRespectsOrdinality(): void
+    {
+        $response = $this->doRequest();
+        $representation = $response->getTopRepresentationByMetum('Alt');
+        $this->assertNotNull($representation);
+        $this->assertEquals(3, $representation->getOrdinality());
+        $this->assertEquals(12, $representation->getId());
+    }
 }

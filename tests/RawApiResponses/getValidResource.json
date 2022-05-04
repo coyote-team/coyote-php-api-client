@@ -1,16 +1,16 @@
 {
   "data": {
-    "id": "22780",
+    "id": "1",
     "type": "resource",
     "attributes": {
-      "id": 22780,
-      "name": "_D8X2287_CREDIT IAN DOUGLAS.jpg",
+      "id": 1,
+      "name": "T.Y.F.F.S.H., 2011",
       "resource_type": "image",
-      "canonical_id": "aea99ba86fe3d004f98b45f4",
-      "source_uri": "https://mcachicago.org/api/v1/attachment_images/thumbs/aea99ba86fe3d004f98b45f4.jpg",
-      "created_at": "2020-05-06T14:32:59.879Z",
-      "updated_at": "2020-05-06T14:34:50.448Z",
-      "resource_group": null
+      "canonical_id": null,
+      "source_uri": "https://coyote.pics/wp-content/uploads/2016/02/Screen-Shot-2016-02-29-at-10.05.14-AM-1024x683.png",
+      "created_at": "2022-05-03T12:00:04.470Z",
+      "updated_at": "2022-05-03T12:00:04.470Z",
+      "resource_group": "collection"
     },
     "relationships": {
       "organization": {
@@ -25,11 +25,24 @@
         }
       },
       "representations": {
-        "data": []
+        "data": [
+          {
+            "type": "representation",
+            "id": "1"
+          },
+          {
+            "type": "representation",
+            "id": "2"
+          },
+          {
+            "type": "representation",
+            "id": "12"
+          }
+        ]
       }
     },
     "links": {
-      "coyote": "http://staging.coyote.pics/organizations/1/resources/22780"
+      "coyote": "http://web/organizations/1/resources/1"
     }
   },
   "included": [
@@ -37,9 +50,94 @@
       "id": "1",
       "type": "organization",
       "attributes": {
-        "name": "Museum of Contemporary Art Chicago"
+        "name": "Acme Museum"
+      }
+    },
+    {
+      "id": "1",
+      "type": "representation",
+      "attributes": {
+        "id": 1,
+        "status": "approved",
+        "content_uri": null,
+        "content_type": "text/plain",
+        "language": "en",
+        "ordinality": 1,
+        "text": "A red, white, and blue fabric canopy presses against walls of room; portable fans blow air into the room through a doorway.",
+        "created_at": "2022-05-03T12:00:04.905Z",
+        "updated_at": "2022-05-04T14:56:08.331Z",
+        "metum": "Alt",
+        "author": "Malcolm Lubowitz",
+        "license": "cc0-1.0"
+      },
+      "relationships": {
+        "resource": {
+          "meta": {
+            "included": false
+          }
+        }
+      },
+      "links": {
+        "self": "http://web/api/v1/representations/1"
+      }
+    },
+    {
+      "id": "2",
+      "type": "representation",
+      "attributes": {
+        "id": 2,
+        "status": "approved",
+        "content_uri": null,
+        "content_type": "text/plain",
+        "language": "en",
+        "ordinality": 2,
+        "text": "Some description.",
+        "created_at": "2022-05-03T12:00:04.905Z",
+        "updated_at": "2022-05-04T14:56:08.331Z",
+        "metum": "Alt",
+        "author": "Malcolm Lubowitz",
+        "license": "cc0-1.0"
+      },
+      "relationships": {
+        "resource": {
+          "meta": {
+            "included": false
+          }
+        }
+      },
+      "links": {
+        "self": "http://web/api/v1/representations/2"
+      }
+    },
+    {
+      "id": "12",
+      "type": "representation",
+      "attributes": {
+        "id": 12,
+        "status": "approved",
+        "content_uri": null,
+        "content_type": "text/plain",
+        "language": "en",
+        "ordinality": 3,
+        "text": "Some high ordinality.",
+        "created_at": "2022-05-03T12:00:04.905Z",
+        "updated_at": "2022-05-04T14:56:08.331Z",
+        "metum": "Alt",
+        "author": "Malcolm Lubowitz",
+        "license": "cc0-1.0"
+      },
+      "relationships": {
+        "resource": {
+          "meta": {
+            "included": false
+          }
+        }
+      },
+      "links": {
+        "self": "http://web/api/v1/representations/2"
       }
     }
+
   ],
   "jsonapi": {
     "version": "1.0"
