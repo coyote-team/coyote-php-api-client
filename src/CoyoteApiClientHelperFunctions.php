@@ -11,6 +11,7 @@ use Coyote\Payload\CreateResourceGroupPayload;
 use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
 use Coyote\Request\CreateResourceGroupRequest;
+use Coyote\Request\CreateResourceRequest;
 use Coyote\Request\CreateResourcesRequest;
 use Coyote\Request\GetMembershipsRequest;
 use Coyote\Request\GetProfileRequest;
@@ -115,7 +116,6 @@ class CoyoteApiClientHelperFunctions
      * @param int $organizationId
      * @param CreateResourcePayload[] $resources
      * @return ResourceModel[]|null
-     * @throws Exception|GuzzleException
      */
     public static function createResources(
         string $endpoint,
@@ -131,5 +131,22 @@ class CoyoteApiClientHelperFunctions
         }
 
         return (new CreateResourcesRequest($client, $payload))->perform();
+    }
+
+    /**
+     * @param string $endpoint
+     * @param string $token
+     * @param int $organizationId
+     * @param CreateResourcePayload $payload
+     * @return ResourceModel|null
+     */
+    public static function createResource(
+        string $endpoint,
+        string $token,
+        int $organizationId,
+        CreateResourcePayload $payload
+    ): ?ResourceModel {
+        $client = new InternalApiClient($endpoint, $token, $organizationId);
+        return (new CreateResourceRequest($client, $payload))->perform();
     }
 }

@@ -87,11 +87,10 @@ class CreateResourcesRequest
         );
     }
 
-    /** @return mixed[] */
     private function marshallPayload(): array
     {
         return [
-            'resources' => array_map(function (CreateResourcePayload $resource) {
+            'resources' => array_map(function (CreateResourcePayload $resource): array {
                 return [
                     'name' => $resource->name,
                     'source_uri' => $resource->source_uri,
