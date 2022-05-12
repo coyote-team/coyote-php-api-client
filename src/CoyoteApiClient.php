@@ -2,10 +2,12 @@
 
 namespace Coyote;
 
+use Coyote\ApiHelper\ResourceUpdatePayloadParser;
 use Coyote\Model\ProfileModel;
 use Coyote\Model\RepresentationModel;
 use Coyote\Model\ResourceGroupModel;
 use Coyote\Model\ResourceModel;
+use Coyote\ModelHelper\ResourceModelHelper;
 use Coyote\Payload\CreateResourceGroupPayload;
 use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
@@ -88,5 +90,16 @@ class CoyoteApiClient
     public function createResourceGroup(CreateResourceGroupPayload $payload): ?ResourceGroupModel
     {
         return (new CreateResourceGroupRequest($this->apiClient, $payload))->perform();
+    }
+
+    public static function parseWebHookResourceUpdate(\stdClass $json): ?ResourceModel
+    {
+        $payload = ResourceUpdatePayloadParser::parse($json);
+
+        if (is_null($payload)) {
+            return null;
+        }
+
+        return ResourceModelHelper::mapResourceUpdatePayloadApiModelToResourceModel($payload);
     }
 }

@@ -82,7 +82,7 @@ class GetResourceRequestTest extends AbstractTestCase
         $response = $this->doRequest();
         $representations = $response->getRepresentations();
         $this->assertIsArray($representations);
-        $this->assertCount(0, $representations);
+        $this->assertCount(3, $representations);
     }
 
     public function testResourceOrganisationIsMapped(): void

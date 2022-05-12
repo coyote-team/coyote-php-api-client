@@ -2,16 +2,14 @@
 
 namespace Coyote\Request;
 
-use Coyote\ApiModel\OrganizationApiModel;
-use Coyote\ApiModel\ResourceRepresentationApiModel;
 use Coyote\ApiResponse\CreateResourceApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
+use Coyote\ModelHelper\ResourceModelHelper;
 use Coyote\Payload\CreateResourcePayload;
 use Coyote\RequestLogger;
 use JsonMapper\JsonMapperFactory;
 use Monolog\Logger;
-use stdClass;
 
 class CreateResourceRequest
 {
@@ -50,43 +48,11 @@ class CreateResourceRequest
         }
 
         $mapper = (new JsonMapperFactory())->bestFit();
-        $response = new CreateResourceApiResponse();
-        $mapper->mapObject($json, $response);
 
-        $organizationApiModel = $this->getOrganizationApiModel($response);
-        $representationApiModels = $this->getRepresentationApiModels($response);
+        /** @var CreateResourceApiResponse $response */
+        $response = $mapper->mapObject($json, new CreateResourceApiResponse());
 
-        return new ResourceModel($response->data, $organizationApiModel, $representationApiModels);
-    }
-
-    private function getOrganizationApiModel(CreateResourceApiResponse $response): OrganizationApiModel
-    {
-        $mapper = (new JsonMapperFactory())->bestFit();
-
-        $organizationApiModel = new OrganizationApiModel();
-
-        /** @var stdClass[] $organizationApiData */
-        $organizationApiData = array_filter($response->included, function ($data) {
-            return $data->type === OrganizationApiModel::TYPE;
-        });
-
-        $data = array_shift($organizationApiData) ?? new stdClass();
-
-        $mapper->mapObject($data, $organizationApiModel);
-
-        return $organizationApiModel;
-    }
-
-
-    /** @return ResourceRepresentationApiModel[]
-     */
-    private function getRepresentationApiModels(CreateResourceApiResponse $response): array
-    {
-        $mapper = (new JsonMapperFactory())->bestFit();
-
-        return $mapper->mapArray(array_filter($response->included, function ($data) {
-            return $data->type === ResourceRepresentationApiModel::TYPE;
-        }), new ResourceRepresentationApiModel());
+        return ResourceModelHelper::mapCreateResourceResponseToResourceModel($response);
     }
 
     /** @return mixed[] */
