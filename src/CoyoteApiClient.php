@@ -25,7 +25,7 @@ class CoyoteApiClient
 {
     private InternalApiClient $apiClient;
 
-    public function __construct(string $endpoint, string $apiToken, int $organizationId)
+    public function __construct(string $endpoint, string $apiToken, ?int $organizationId = null)
     {
         $this->apiClient = new InternalApiClient($endpoint, $apiToken, $organizationId);
     }
