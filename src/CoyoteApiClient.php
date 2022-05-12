@@ -6,8 +6,10 @@ use Coyote\Model\ProfileModel;
 use Coyote\Model\RepresentationModel;
 use Coyote\Model\ResourceGroupModel;
 use Coyote\Model\ResourceModel;
+use Coyote\Payload\CreateResourceGroupPayload;
 use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
+use Coyote\Request\CreateResourceGroupRequest;
 use Coyote\Request\CreateResourceRequest;
 use Coyote\Request\CreateResourcesRequest;
 use Coyote\Request\GetProfileRequest;
@@ -83,8 +85,8 @@ class CoyoteApiClient
         throw new Exception("getResourceGroup is not yet implemented.");
     }
 
-    public function createResourceGroup(): ?ResourceGroupModel
+    public function createResourceGroup(CreateResourceGroupPayload $payload): ?ResourceGroupModel
     {
-        throw new Exception("createResourceGroup is not yet implemented.");
+        return (new CreateResourceGroupRequest($this->apiClient, $payload))->perform();
     }
 }
