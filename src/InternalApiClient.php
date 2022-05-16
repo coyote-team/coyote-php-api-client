@@ -86,8 +86,8 @@ class InternalApiClient
             : false;
 
         return $includeOrganizationId
-            ? sprintf('%s/organizations/%d/%s', $this->endpoint, $this->organizationId, $part)
-            : sprintf('%s/%s', $this->endpoint, $part);
+            ? sprintf('%s/organizations/%d%s', $this->endpoint, $this->organizationId, $part)
+            : sprintf('%s%s', $this->endpoint, $part);
     }
 
     /**
