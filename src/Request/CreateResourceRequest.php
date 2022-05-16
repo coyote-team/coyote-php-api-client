@@ -59,14 +59,16 @@ class CreateResourceRequest
     private function marshallPayload(): array
     {
         return [
-            'name' => $this->payload->name,
-            'source_uri' => $this->payload->source_uri,
-            'resource_type' => $this->payload->resource_type,
-            'resource_group_id' => $this->payload->resource_group_id,
-            'host_uris' => $this->payload->host_uris,
-            'representations' => is_null($this->payload->representations)
-                ? null
-                : array_map('get_object_vars', $this->payload->representations)
+            'resource' => [
+                'name' => $this->payload->name,
+                'source_uri' => $this->payload->source_uri,
+                'resource_type' => $this->payload->resource_type,
+                'resource_group_id' => $this->payload->resource_group_id,
+                'host_uris' => $this->payload->host_uris,
+                'representations' => is_null($this->payload->representations)
+                    ? null
+                    : array_map('get_object_vars', $this->payload->representations)
+            ],
         ];
     }
 }
