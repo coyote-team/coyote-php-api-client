@@ -61,7 +61,7 @@ class CreateResourcesRequest
 
         return array_map(function (ResourceApiModel $model) use ($organization, $response): ResourceModel {
             $representations = $this->getRepresentationApiModelsByResourceId(
-                $response->included,
+                $response->included ?? [],
                 $model->relationships->representations->data
             );
             return new ResourceModel($model, $organization, $representations);
