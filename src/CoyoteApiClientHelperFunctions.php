@@ -29,21 +29,15 @@ class CoyoteApiClientHelperFunctions
         string $uri
     ): ?ResourceGroupModel {
         $client = new InternalApiClient($endpoint, $token, $organizationId);
-        $groups = (new GetResourceGroupsRequest($client))->data();
+        $groups = (new GetResourceGroupsRequest($client))->data() ?? [];
 
-        if (empty($groups)) {
-            return null;
+        foreach ($groups as $group) {
+            if ($group->getUri() === $uri) {
+                return $group;
+            }
         }
 
-        $matches = array_filter($groups, function (ResourceGroupModel $group) use ($uri) :bool {
-            return $group->getUri() === $uri;
-        });
-
-        if (empty($matches)) {
-            return null;
-        }
-
-        return array_shift($matches);
+        return null;
     }
 
     public static function getResourceById(
