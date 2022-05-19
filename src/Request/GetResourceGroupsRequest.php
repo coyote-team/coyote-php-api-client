@@ -20,7 +20,7 @@ class GetResourceGroupsRequest
     public function __construct(InternalApiClient $client, int $logLevel = Logger::INFO)
     {
         $this->client = $client;
-        $this->logger = new RequestLogger('GetProfileRequest', $logLevel);
+        $this->logger = new RequestLogger('GetResourceGroupsRequest', $logLevel);
     }
 
     /** @return ResourceGroupModel[]|null */
