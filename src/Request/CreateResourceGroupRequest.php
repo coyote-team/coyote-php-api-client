@@ -6,26 +6,18 @@ use Coyote\ApiResponse\CreateResourceGroupApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceGroupModel;
 use Coyote\Payload\CreateResourceGroupPayload;
-use Coyote\RequestLogger;
-use JsonMapper\JsonMapperFactory;
-use Monolog\Logger;
 
-class CreateResourceGroupRequest
+class CreateResourceGroupRequest extends AbstractApiRequest
 {
     private const PATH = '/resource_groups';
 
     private CreateResourceGroupPayload $payload;
     private InternalApiClient $apiClient;
-    private RequestLogger $logger;
 
-    public function __construct(
-        InternalApiClient $apiClient,
-        CreateResourceGroupPayload $payload,
-        int $logLevel = Logger::INFO
-    ) {
+    public function __construct(InternalApiClient $apiClient, CreateResourceGroupPayload $payload)
+    {
         $this->apiClient = $apiClient;
         $this->payload = $payload;
-        $this->logger = new RequestLogger('CreateResourceGroupRequest', $logLevel);
     }
 
     public function perform(): ?ResourceGroupModel
@@ -37,7 +29,7 @@ class CreateResourceGroupRequest
                 [InternalApiClient::INCLUDE_ORG_ID => true]
             );
         } catch (\Exception $error) {
-            $this->logger->error(
+            self::logError(
                 "Error creating resource group ({$this->payload->name}/{$this->payload->webhook_uri}): "
                 . $error->getMessage()
             );
@@ -45,16 +37,14 @@ class CreateResourceGroupRequest
         }
 
         if (is_null($json)) {
-            $this->logger->warn(
+            self::logWarning(
                 "Unexpected null response when creating resource group "
                 . "({$this->payload->name}/{$this->payload->webhook_uri})"
             );
             return null;
         }
 
-        $mapper = (new JsonMapperFactory())->bestFit();
-        $response = new CreateResourceGroupApiResponse();
-        $mapper->mapObject($json, $response);
+        $response = self::mapper()->mapObject($json, (new CreateResourceGroupApiResponse()));
 
         return $this->responseToResourceGroup($response);
     }

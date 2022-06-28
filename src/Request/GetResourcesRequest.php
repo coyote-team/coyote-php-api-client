@@ -2,35 +2,23 @@
 
 namespace Coyote\Request;
 
-use Coyote\ApiHelper\ResourceRelatedModelInstanceFactory;
-use Coyote\ApiModel\AbstractResourceRelatedApiModel;
 use Coyote\ApiModel\OrganizationApiModel;
 use Coyote\ApiModel\ResourceApiModel;
 use Coyote\ApiModel\ResourceRepresentationApiModel;
 use Coyote\ApiResponse\GetResourcesApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
-use Coyote\RequestLogger;
-use JsonMapper\Exception\BuilderException;
-use JsonMapper\Exception\ClassFactoryException;
-use JsonMapper\Handler\FactoryRegistry;
-use JsonMapper\JsonMapperBuilder;
-use JsonMapper\JsonMapperFactory;
-use JsonMapper\Builders\PropertyMapperBuilder;
-use Monolog\Logger;
 use stdClass;
 
-class GetResourcesRequest
+class GetResourcesRequest extends AbstractApiRequest
 {
     private const PATH = '/resources/';
 
     private InternalApiClient $client;
-    private RequestLogger $logger;
 
-    public function __construct(InternalApiClient $client, int $logLevel = Logger::INFO)
+    public function __construct(InternalApiClient $client)
     {
         $this->client = $client;
-        $this->logger = new RequestLogger('GetResourcesRequest', $logLevel);
     }
 
     /** @return ResourceModel[]|null */
@@ -43,12 +31,12 @@ class GetResourcesRequest
         try {
             $json = $this->client->get(self::PATH, [InternalApiClient::INCLUDE_ORG_ID => true]);
         } catch (\Exception $error) {
-            $this->logger->error("Error fetching resources: " . $error->getMessage());
+            self::logError("Error fetching resources: " . $error->getMessage());
             return null;
         }
 
         if (is_null($json)) {
-            $this->logger->warn("Unexpected null response when fetching resources");
+            self::logWarning("Unexpected null response when fetching resources");
             return null;
         }
 
@@ -58,10 +46,7 @@ class GetResourcesRequest
     /** @return ResourceModel[] */
     private function mapResponseToResourceModels(stdClass $json): array
     {
-        $mapper = (new JsonMapperFactory())->bestFit();
-
-        $response = new GetResourcesApiResponse();
-        $mapper->mapObject($json, $response);
+        $response = self::mapper()->mapObject($json, (new GetResourcesApiResponse()));
 
         $organizationApiModel = $this->getOrganizationApiModel($response);
         $representationApiModels = $this->getRepresentationApiModels($response);
@@ -84,9 +69,7 @@ class GetResourcesRequest
     /** @return ResourceRepresentationApiModel[] */
     private function getRepresentationApiModels(GetResourcesApiResponse $response): array
     {
-        $mapper = (new JsonMapperFactory())->bestFit();
-
-        return $mapper->mapArray(array_filter($response->included, function ($data) {
+        return self::mapper()->mapArray(array_filter($response->included, function ($data) {
             return $data->type === ResourceRepresentationApiModel::TYPE;
         }), new ResourceRepresentationApiModel());
     }
