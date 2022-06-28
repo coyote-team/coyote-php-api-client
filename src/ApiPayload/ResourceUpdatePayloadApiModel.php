@@ -15,6 +15,5 @@ class ResourceUpdatePayloadApiModel
     /** @var array<OrganizationApiModel|ResourceRepresentationApiModel> */
     public array $included;
 
-    public ResourceLinks $links;
     public ApiMetaData $jsonapi;
 }
