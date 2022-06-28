@@ -7,6 +7,8 @@ use Coyote\ApiModel\Partial\ResourceGroupRelationships;
 
 class ResourceGroupApiModel
 {
+    public const TYPE = 'resource_group';
+
     public string $id;
     public string $type;
     public ResourceGroupAttributes $attributes;
