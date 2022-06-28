@@ -2,9 +2,8 @@
 
 namespace Coyote\ApiModel\Partial;
 
-use stdClass;
-
 class ResourceGroupRelationship
 {
-    public stdClass $meta;
+    /** @var Relationship[] */
+    public array $data;
 }

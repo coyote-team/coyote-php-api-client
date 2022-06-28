@@ -2,9 +2,9 @@
 
 namespace Coyote\ApiModel\Partial;
 
-class ResourceRelationships
+class ResourceUpdateRelationships
 {
     public SingleOrganizationRelationship $organization;
     public RepresentationRelationship $representations;
-    public ExcludedRelationship $resource_groups;
+    public ResourceGroupRelationship $resource_groups;
 }

@@ -13,4 +13,11 @@ class ResourceUpdatePayloadParserTest extends AbstractTestCase
         $result = ResourceUpdatePayloadParser::parse($json);
         $this->assertNull($result);
     }
+
+    public function testParsingValidPayloadReturnsModel(): void
+    {
+        $json = $this->getApiContract('resourceUpdatePayload');
+        $result = ResourceUpdatePayloadParser::parse($json);
+        $this->assertInstanceOf(ResourceUpdatePayloadApiModel::class, $result);
+    }
 }
