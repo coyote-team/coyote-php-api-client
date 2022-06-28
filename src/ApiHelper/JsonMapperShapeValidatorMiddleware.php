@@ -18,9 +18,11 @@ class JsonMapperShapeValidatorMiddleware extends AbstractMiddleware
         JsonMapperInterface $mapper
     ): void {
 
+        $class = get_called_class();
+
         foreach ((array) $json as $key => $value) {
             if (!$propertyMap->hasProperty($key)) {
-                throw new RuntimeException("Missing JSON key '$key' in object interface");
+                throw new RuntimeException("($class) Missing JSON key '$key' in object interface");
             }
         }
 

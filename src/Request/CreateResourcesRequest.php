@@ -10,26 +10,17 @@ use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
 use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
-use Coyote\RequestLogger;
-use JsonMapper\JsonMapperFactory;
-use Monolog\Logger;
 
-class CreateResourcesRequest
+class CreateResourcesRequest extends AbstractApiRequest
 {
     private const PATH = '/resources/create';
 
     private CreateResourcesPayload $payload;
     private InternalApiClient $apiClient;
-    private RequestLogger $logger;
 
-    public function __construct(
-        InternalApiClient $apiClient,
-        CreateResourcesPayload $payload,
-        int $logLevel = Logger::INFO
-    ) {
+    public function __construct(InternalApiClient $apiClient, CreateResourcesPayload $payload) {
         $this->apiClient = $apiClient;
         $this->payload = $payload;
-        $this->logger = new RequestLogger('CreateResourcesRequest', $logLevel);
     }
 
     /** @return ResourceModel[]|null */
@@ -42,22 +33,19 @@ class CreateResourcesRequest
                 [InternalApiClient::INCLUDE_ORG_ID => true]
             );
         } catch (\Exception $error) {
-            $this->logger->error("Error creating resources: " . $error->getMessage());
+            self::logError("Error creating resources: " . $error->getMessage());
             return null;
         }
 
         if (is_null($json)) {
-            $this->logger->warn("Unexpected null response when creating resources");
+            self::logWarning("Unexpected null response when creating resources");
             return null;
         }
-
-        $mapper = (new JsonMapperFactory())->bestFit();
-        $response = new CreateResourcesApiResponse();
 
         // Resource batch creation doesn't include its member organization
         $organization = null;
 
-        $mapper->mapObject($json, $response);
+        $response = self::mapper()->mapObject($json, (new CreateResourcesApiResponse()));
 
         return array_map(function (ResourceApiModel $model) use ($organization, $response): ResourceModel {
             $representations = $this->getRepresentationApiModelsByResourceId(

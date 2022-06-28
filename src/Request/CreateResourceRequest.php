@@ -7,26 +7,17 @@ use Coyote\InternalApiClient;
 use Coyote\Model\ResourceModel;
 use Coyote\ModelHelper\ResourceModelHelper;
 use Coyote\Payload\CreateResourcePayload;
-use Coyote\RequestLogger;
-use JsonMapper\JsonMapperFactory;
-use Monolog\Logger;
 
-class CreateResourceRequest
+class CreateResourceRequest extends AbstractApiRequest
 {
     private const PATH = '/resources/';
 
-    private RequestLogger $logger;
     private CreateResourcePayload $payload;
     private InternalApiClient $apiClient;
 
-    public function __construct(
-        InternalApiClient $apiClient,
-        CreateResourcePayload $payload,
-        int $logLevel = Logger::INFO
-    ) {
+    public function __construct(InternalApiClient $apiClient, CreateResourcePayload $payload) {
         $this->apiClient = $apiClient;
         $this->payload = $payload;
-        $this->logger = new RequestLogger('CreateResourceRequest', $logLevel);
     }
 
     public function perform(): ?ResourceModel
@@ -38,24 +29,21 @@ class CreateResourceRequest
                 [InternalApiClient::INCLUDE_ORG_ID => true]
             );
         } catch (\Exception $error) {
-            $this->logger->error("Error creating resource {$this->payload->source_uri}: " . $error->getMessage());
+            self::logError("Error creating resource {$this->payload->source_uri}: " . $error->getMessage());
             return null;
         }
 
         if (is_null($json)) {
-            $this->logger->warn("Unexpected null response when creating resource {$this->payload->source_uri}");
+            self::logWarning("Unexpected null response when creating resource {$this->payload->source_uri}");
             return null;
         }
 
-        $mapper = (new JsonMapperFactory())->bestFit();
-
         /** @var CreateResourceApiResponse $response */
-        $response = $mapper->mapObject($json, new CreateResourceApiResponse());
+        $response = self::mapper()->mapObject($json, new CreateResourceApiResponse());
 
         return ResourceModelHelper::mapCreateResourceResponseToResourceModel($response);
     }
 
-    /** @return mixed[] */
     private function marshallPayload(): array
     {
         return [

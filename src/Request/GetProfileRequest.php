@@ -2,51 +2,40 @@
 
 namespace Coyote\Request;
 
-use Coyote\ApiHelper\ResourceRelatedModelInstanceFactory;
-use Coyote\ApiModel\AbstractResourceRelatedApiModel;
 use Coyote\ApiModel\MembershipApiModel;
 use Coyote\ApiModel\OrganizationApiModel;
-use Coyote\ApiModel\Partial\MembershipAttributes;
 use Coyote\ApiModel\ProfileApiModel;
 use Coyote\ApiResponse\GetProfileApiResponse;
 use Coyote\InternalApiClient;
 use Coyote\Model\ProfileModel;
-use Coyote\RequestLogger;
-use JsonMapper\Builders\PropertyMapperBuilder;
-use JsonMapper\Handler\FactoryRegistry;
-use JsonMapper\JsonMapperBuilder;
-use JsonMapper\JsonMapperFactory;
 
-use Monolog\Logger;
 use stdClass;
 
-class GetProfileRequest
+class GetProfileRequest extends AbstractApiRequest
 {
     private const PATH = '/profile/';
 
     private InternalApiClient $client;
-    private RequestLogger $logger;
 
-    public function __construct(InternalApiClient $client, int $logLevel = Logger::INFO)
+    public function __construct(InternalApiClient $client)
     {
         $this->client = $client;
-        $this->logger = new RequestLogger('GetProfileRequest', $logLevel);
     }
 
     /** @return ProfileModel|null */
     public function data(): ?ProfileModel
     {
-        $this->logger->debug('Fetching profile');
+        self::logDebug('Fetching profile');
 
         try {
             $json = $this->client->get(self::PATH);
         } catch (\Exception $error) {
-            $this->logger->error('Error fetching profile: ' . $error->getMessage());
+            self::logError('Error fetching profile: ' . $error->getMessage());
             return null;
         }
 
         if (is_null($json)) {
-            $this->logger->warn('Unexpected null response when fetching profile');
+            self::logWarning('Unexpected null response when fetching profile');
             return null;
         }
 
@@ -55,10 +44,7 @@ class GetProfileRequest
 
     private function mapResponseToProfileModel(stdClass $json): ProfileModel
     {
-        $mapper = (new JsonMapperFactory())->bestFit();
-
-        $response = new GetProfileApiResponse();
-        $mapper->mapObject($json, $response);
+        $response = self::mapper()->mapObject($json, (new GetProfileApiResponse()));
 
         $profileApiModel = $this->getProfileApiModel($response);
         $organizationApiModels = $this->getOrganizationApiModels($response);
@@ -79,10 +65,8 @@ class GetProfileRequest
             return $item->type === MembershipApiModel::TYPE;
         });
 
-        $mapper = (new JsonMapperFactory())->bestFit();
-
-        return array_map(function (stdClass $item) use ($mapper): MembershipApiModel {
-            return $mapper->mapObject($item, new MembershipApiModel());
+        return array_map(function (stdClass $item): MembershipApiModel {
+            return self::mapper()->mapObject($item, new MembershipApiModel());
         }, $memberships);
     }
 
@@ -93,10 +77,8 @@ class GetProfileRequest
             return $item->type === OrganizationApiModel::TYPE;
         });
 
-        $mapper = (new JsonMapperFactory())->bestFit();
-
-        return array_map(function (stdClass $item) use ($mapper): OrganizationApiModel {
-            return $mapper->mapObject($item, new OrganizationApiModel());
+        return array_map(function (stdClass $item): OrganizationApiModel {
+            return self::mapper()->mapObject($item, new OrganizationApiModel());
         }, $organizations);
     }
 }
