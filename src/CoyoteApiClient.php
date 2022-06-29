@@ -85,7 +85,11 @@ class CoyoteApiClient
 
     public function getResourceGroup(string $id): ?ResourceGroupModel
     {
-        throw new Exception("getResourceGroup is not yet implemented.");
+        $group = array_filter($this->getResourceGroups(), function (ResourceGroupModel $group) use ($id): bool {
+            return $group->getId() === $id;
+        });
+
+        return array_shift($group);
     }
 
     public function createResourceGroup(CreateResourceGroupPayload $payload): ?ResourceGroupModel
