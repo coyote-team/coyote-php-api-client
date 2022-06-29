@@ -10,7 +10,13 @@ trait JsonMapperTrait
 {
     public static function mapper(): JsonMapperInterface
     {
-        $mapper = (new JsonMapperFactory())->bestFit();
+        return (new JsonMapperFactory())->bestFit();
+    }
+
+    public static function validatingMapper(): JsonMapperInterface
+    {
+        $mapper = self::mapper();
+        $mapper->push(new JsonMapperShapeValidatorMiddleware());
         return $mapper;
     }
 }

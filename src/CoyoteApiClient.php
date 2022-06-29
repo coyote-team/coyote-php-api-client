@@ -17,6 +17,7 @@ use Coyote\Request\CreateResourceRequest;
 use Coyote\Request\CreateResourcesRequest;
 use Coyote\Request\GetProfileRequest;
 use Coyote\Request\GetResourceGroupsRequest;
+use Coyote\Request\GetResourceRepresentationRequest;
 use Coyote\Request\GetResourceRepresentationsRequest;
 use Coyote\Request\GetResourceRequest;
 use Coyote\Request\GetResourcesRequest;
@@ -69,10 +70,9 @@ class CoyoteApiClient
         return (new GetResourceRepresentationsRequest($this->apiClient, $id))->data();
     }
 
-    public function getResourceRepresentation(string $id): void
+    public function getResourceRepresentation(string $id): ?RepresentationModel
     {
-        throw new Exception("getResourceRepresentation is not yet implemented.");
-        //return (new GetResourceRepresentationRequest($this->apiClient, $id))->data();
+        return (new GetResourceRepresentationRequest($this->apiClient, $id))->data();
     }
 
     /**
