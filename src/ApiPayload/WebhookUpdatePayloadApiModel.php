@@ -5,11 +5,11 @@ namespace Coyote\ApiPayload;
 use Coyote\ApiModel\OrganizationApiModel;
 use Coyote\ApiModel\ResourceGroupApiModel;
 use Coyote\ApiModel\ResourceRepresentationApiModel;
-use Coyote\ApiModel\ResourceUpdateApiModel;
+use Coyote\ApiModel\WebhookUpdateApiModel;
 
-class ResourceUpdatePayloadApiModel
+class WebhookUpdatePayloadApiModel
 {
-    public ResourceUpdateApiModel $data;
+    public WebhookUpdateApiModel $data;
 
     /** @var array<OrganizationApiModel|ResourceRepresentationApiModel|ResourceGroupApiModel> */
     public array $included;

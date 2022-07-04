@@ -3,7 +3,7 @@
 namespace Tests;
 
 use Coyote\ApiHelper\ResourceUpdatePayloadParser;
-use Coyote\ApiPayload\ResourceUpdatePayloadApiModel;
+use Coyote\ApiPayload\WebhookUpdatePayloadApiModel;
 
 class ResourceUpdatePayloadParserTest extends AbstractTestCase
 {
@@ -18,6 +18,6 @@ class ResourceUpdatePayloadParserTest extends AbstractTestCase
     {
         $json = $this->getApiContract('resourceUpdatePayload');
         $result = ResourceUpdatePayloadParser::parse($json);
-        $this->assertInstanceOf(ResourceUpdatePayloadApiModel::class, $result);
+        $this->assertInstanceOf(WebhookUpdatePayloadApiModel::class, $result);
     }
 }

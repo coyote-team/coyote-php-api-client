@@ -4,7 +4,7 @@ namespace Coyote\ApiModel\Partial;
 
 class ResourceUpdateRelationships
 {
-    public SingleOrganizationRelationship $organization;
-    public RepresentationRelationship $representations;
-    public ResourceGroupRelationship $resource_groups;
+    public ExcludedRelationship $organization;
+    public ExcludedRelationship $representations;
+    public ExcludedRelationship $resource_groups;
 }
