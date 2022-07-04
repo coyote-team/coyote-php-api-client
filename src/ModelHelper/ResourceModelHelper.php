@@ -5,16 +5,18 @@ namespace Coyote\ModelHelper;
 use Coyote\ApiModel\OrganizationApiModel;
 use Coyote\ApiModel\ResourceGroupApiModel;
 use Coyote\ApiModel\ResourceRepresentationApiModel;
-use Coyote\ApiPayload\ResourceUpdatePayloadApiModel;
+use Coyote\ApiModel\ResourceUpdateApiModel;
+use Coyote\ApiPayload\WebhookUpdatePayloadApiModel;
 use Coyote\ApiResponse\CreateResourceApiResponse;
 use Coyote\Model\ResourceModel;
 use Coyote\Model\ResourceUpdateModel;
+use Coyote\Model\WebhookUpdateModel;
 use JsonMapper\JsonMapperFactory;
 use stdClass;
 
 class ResourceModelHelper
 {
-    // TODO: These two functions can probably be simplified by using an Interface
+    // TODO: These functions can probably be simplified by using an Interface
 
     public static function mapCreateResourceResponseToResourceModel(
         CreateResourceApiResponse $response
@@ -25,20 +27,27 @@ class ResourceModelHelper
         return new ResourceModel($response->data, $organizationApiModel, $representationApiModels);
     }
 
-    public static function mapResourceUpdatePayloadApiModelToResourceUpdateModel(
-        ResourceUpdatePayloadApiModel $update
-    ): ResourceUpdateModel
+    public static function mapWebhookUpdatePayloadApiModelToWebhookUpdateModel(
+        WebhookUpdatePayloadApiModel $update
+    ): WebhookUpdateModel
     {
         $organizationApiModel = self::getOrganizationApiModel($update->included);
         $representationApiModels = self::getRepresentationApiModels($update->included);
         $resourceGroupModels = self::getResourceGroupApiModels($update->included);
 
-        return new ResourceUpdateModel(
+        return new WebhookUpdateModel(
             $update->data,
             $organizationApiModel,
             $representationApiModels,
             $resourceGroupModels
         );
+    }
+
+    public static function mapUpdateResourceResponseToResourceUpdateModel(
+        ResourceUpdateApiModel $update
+    ): ResourceUpdateModel
+    {
+        return new ResourceUpdateModel($update);
     }
 
     private static function getOrganizationApiModel(array $included): OrganizationApiModel

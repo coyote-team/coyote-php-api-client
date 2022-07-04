@@ -7,7 +7,7 @@ use Coyote\Model\ProfileModel;
 use Coyote\Model\RepresentationModel;
 use Coyote\Model\ResourceGroupModel;
 use Coyote\Model\ResourceModel;
-use Coyote\Model\ResourceUpdateModel;
+use Coyote\Model\WebhookUpdateModel;
 use Coyote\ModelHelper\ResourceModelHelper;
 use Coyote\Payload\CreateResourceGroupPayload;
 use Coyote\Payload\CreateResourcePayload;
@@ -97,7 +97,7 @@ class CoyoteApiClient
         return (new CreateResourceGroupRequest($this->apiClient, $payload))->perform();
     }
 
-    public static function parseWebHookResourceUpdate(\stdClass $json): ?ResourceUpdateModel
+    public static function parseWebHookResourceUpdate(\stdClass $json): ?WebhookUpdateModel
     {
         $payload = ResourceUpdatePayloadParser::parse($json);
 
@@ -105,6 +105,6 @@ class CoyoteApiClient
             return null;
         }
 
-        return ResourceModelHelper::mapResourceUpdatePayloadApiModelToResourceUpdateModel($payload);
+        return ResourceModelHelper::mapWebhookUpdatePayloadApiModelToWebhookUpdateModel($payload);
     }
 }

@@ -15,6 +15,7 @@ class InternalApiClient
     private const METHOD_GET = 'GET';
     private const METHOD_POST = 'POST';
     private const METHOD_PUT = 'PUT';
+    private const METHOD_PATCH = 'PATCH';
 
     private Client $client;
 
@@ -79,6 +80,22 @@ class InternalApiClient
         );
     }
 
+    /**
+     * @param string $url
+     * @param array $payload
+     * @param array $options
+     *
+     * @return null|stdClass
+     * @throws Exception
+     */
+    public function patch(string $url, array $payload, array $options = []): ?stdClass
+    {
+        return self::request(
+            $this->makeUrl($url, $options),
+            array_merge($options, ['method' => self::METHOD_PATCH], ['json' => $payload])
+        );
+    }
+
     private function makeUrl(string $part, array $options): string
     {
         $includeOrganizationId = array_key_exists(self::INCLUDE_ORG_ID, $options)
@@ -117,6 +134,10 @@ class InternalApiClient
 
                 case self::METHOD_PUT:
                     $response = $this->client->put($url, $options);
+                    break;
+
+                case self::METHOD_PATCH:
+                    $response = $this->client->patch($url, $options);
                     break;
 
                 default:
