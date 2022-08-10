@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Coyote\InternalApiClient;
+use Coyote\Model\OrganizationModel;
 use Coyote\Model\ProfileModel;
 use Coyote\Request\GetProfileRequest;
 use GuzzleHttp\Psr7\Response;
@@ -102,4 +103,11 @@ class GetProfileRequestTest extends AbstractTestCase
         );
     }
 
+    public function testMembershipsIncludeOrganisations(): void
+    {
+        $response = $this->doRequest();
+        $memberships = $response->getMemberships();
+        $membership = array_pop($memberships);
+        $this->assertInstanceOf(OrganizationModel::class, $membership->getOrganization());
+    }
 }

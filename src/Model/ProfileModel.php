@@ -80,7 +80,9 @@ class ProfileModel
     private function mapMembershipApiModelsToMembershipModels(array $apiModels): array
     {
         return array_map(function (MembershipApiModel $apiModel): MembershipModel {
-            return new MembershipModel($apiModel);
+            $membership = new MembershipModel($apiModel);
+            $membership->setOrganisation($this->organizations);
+            return $membership;
         }, $apiModels);
     }
 }
