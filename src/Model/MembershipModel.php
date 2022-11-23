@@ -8,9 +8,36 @@ class MembershipModel
 {
     private string $id;
     private string $name;
+    private string $first_name;
+    private string $last_name;
     private string $email;
     private string $organizationId;
+    private bool $isActive;
     private ?OrganizationModel $organization = null;
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
 
     /**
      * @return string
@@ -76,5 +103,8 @@ class MembershipModel
         $this->email = $model->attributes->email;
         $this->role = $model->attributes->role;
         $this->organizationId = $model->attributes->organization_id;
+        $this->first_name = $model->attributes->first_name;
+        $this->last_name = $model->attributes->last_name;
+        $this->isActive = $model->attributes->active;
     }
 }

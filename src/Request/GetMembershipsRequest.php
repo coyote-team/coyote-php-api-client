@@ -47,6 +47,7 @@ class GetMembershipsRequest extends AbstractApiRequest
         $memberships = $response->data;
 
         return array_map(function (MembershipApiModel $model): MembershipModel {
+            $model->attributes->organization_id = strval($this->client->getOrganizationId() ?? 0);
             return new MembershipModel($model);
         }, $memberships);
     }
