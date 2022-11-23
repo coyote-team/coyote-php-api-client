@@ -33,6 +33,11 @@ class InternalApiClient
         $this->client = $client ?? new Client();
     }
 
+    public function getOrganizationId(): ?int
+    {
+        return $this->organizationId;
+    }
+
     /**
      * @param string $url
      * @param array $options

@@ -63,6 +63,15 @@ class ProfileModel
     }
 
     /**
+     * @param array $memberships MembershipModel[]
+     * @return MembershipModel[]
+     */
+    public function setMemberships(array $memberships): array
+    {
+        return $this->memberships = $memberships;
+    }
+
+    /**
      * @param array<OrganizationApiModel> $apiModels
      * @return array<OrganizationModel>
      */
