@@ -69,7 +69,7 @@ class GetProfileRequest extends AbstractApiRequest
     /**
      * @param ProfileApiModel $profile
      * @param OrganizationModel[] $organizations
-     * @return MembershipApiModel[]
+     * @return MembershipModel[]
      */
     private function getMembershipModelsBySeparateRequest(ProfileApiModel $profile, array $organizations): array
     {

@@ -143,4 +143,55 @@ class CoyoteApiClientHelperFunctions
         $client = new InternalApiClient($endpoint, $token, $organizationId);
         return (new CreateResourceRequest($client, $payload))->perform();
     }
+
+    /**
+     * @return OrganizationModel[]
+     */
+    public static function getOrganizationsFilteredForMembershipRoles(
+        string $endpoint,
+        string $token,
+        array $roles
+    ): array {
+        $profile = self::getProfile($endpoint, $token);
+
+        if (is_null($profile)) {
+            return [];
+        }
+
+        return array_reduce($profile->getMemberships(), function (array $set, MembershipModel $membership) use ($roles): array {
+            if (in_array($membership->getRole(), $roles)) {
+                $organization = $membership->getOrganization();
+                if (!is_null($organization)) {
+                    $set[] = $membership->getOrganization();
+                }
+            }
+
+            return $set;
+        }, []);
+    }
+
+    public static function getOrganisationMembershipWithName(
+        string $endpoint,
+        string $token,
+        string $organizationId,
+        string $name
+    ): ?MembershipModel {
+        $client = new InternalApiClient($endpoint, $token, $organizationId);
+        $memberships = (new GetMembershipsRequest($client))->data();
+
+        if (is_null($memberships)) {
+            return null;
+        }
+
+        $matches = array_filter($memberships, function (MembershipModel $m) use ($name): bool {
+            return $m->isActive() &&
+                $m->getName() === $name;
+        });
+
+        if (count($matches) !== 1) {
+            return null;
+        }
+
+        return array_pop($matches);
+    }
 }
