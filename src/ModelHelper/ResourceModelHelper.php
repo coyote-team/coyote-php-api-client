@@ -8,6 +8,7 @@ use Coyote\ApiModel\ResourceRepresentationApiModel;
 use Coyote\ApiModel\ResourceUpdateApiModel;
 use Coyote\ApiPayload\WebhookUpdatePayloadApiModel;
 use Coyote\ApiResponse\CreateResourceApiResponse;
+use Coyote\Model\RepresentationModel;
 use Coyote\Model\ResourceModel;
 use Coyote\Model\ResourceUpdateModel;
 use Coyote\Model\WebhookUpdateModel;
@@ -91,4 +92,32 @@ class ResourceModelHelper
         }), new ResourceGroupApiModel());
     }
 
+    /**
+     * @param string $metum
+     * @param RepresentationModel[] $representations
+     * @return RepresentationModel|null
+     */
+    public static function getTopRepresentationByMetum(string $metum, array $representations): ?RepresentationModel
+    {
+        $byMetum = array_filter($representations, function (RepresentationModel $r) use ($metum): bool {
+            return $r->getMetum() === $metum;
+        });
+
+        uasort($byMetum, function (RepresentationModel $a, RepresentationModel $b): int {
+            $aO = $a->getOrdinality();
+            $bO = $b->getOrdinality();
+
+            if ($aO < $bO) {
+                return -1;
+            }
+
+            if ($aO > $bO) {
+                return 1;
+            }
+
+            return 0;
+        });
+
+        return array_pop($byMetum);
+    }
 }

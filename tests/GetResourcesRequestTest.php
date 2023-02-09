@@ -58,6 +58,18 @@ class GetResourcesRequestTest extends AbstractTestCase
         }
     }
 
+    public function testHostURIsAreAvailable(): void
+    {
+        $response = $this->doRequest();
+        for ($i = 0; $i <= count($response); $i++) {
+            $model = $response[$i];
+            $this->assertEquals(
+                $model->getHostURIs(),
+                $this->contract->data[$i]->id
+            );
+        }
+    }
+
     public function testResourceIdIsAvailable(): void
     {
         $resource = $this->doRequest()[0];

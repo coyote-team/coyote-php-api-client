@@ -9,6 +9,7 @@
         "resource_type": "image",
         "canonical_id": "279664",
         "source_uri": "https://images.collection.cooperhewitt.org/a279664_79516fc85e5d931f_b.jpg",
+        "host_uris": ["https://example.local/some-page"],
         "created_at": "2021-11-19T17:39:56.873Z",
         "updated_at": "2021-11-19T17:39:56.873Z",
         "resource_group": "Test Import"
@@ -47,6 +48,7 @@
         "resource_type": "image",
         "canonical_id": "156010",
         "source_uri": "https://images.collection.cooperhewitt.org/a156010_fbf9771952873556_b.jpg",
+        "host_uris": ["https://example.local/some-page", "https://example.local/some-other-page"],
         "created_at": "2021-11-19T17:39:56.654Z",
         "updated_at": "2021-11-19T17:39:56.654Z",
         "resource_group": "Test Import"
@@ -85,6 +87,7 @@
         "resource_type": "image",
         "canonical_id": "310768",
         "source_uri": "https://images.collection.cooperhewitt.org/a310768_5a30b06fe067ad23_b.jpg",
+        "host_uris": [],
         "created_at": "2021-11-19T17:39:56.452Z",
         "updated_at": "2021-11-19T17:39:56.452Z",
         "resource_group": "Test Import"
