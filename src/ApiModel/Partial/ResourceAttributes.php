@@ -9,6 +9,7 @@ class ResourceAttributes
     public string $resource_type;
     public ?string $canonical_id;
     public string $source_uri;
+    public array $host_uris;
     public string $created_at;
     public string $updated_at;
     public ?string $resource_group;

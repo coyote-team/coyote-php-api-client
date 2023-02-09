@@ -7,6 +7,7 @@ use Coyote\ApiModel\ResourceApiModel;
 use Coyote\ApiModel\ResourceGroupApiModel;
 use Coyote\ApiModel\ResourceRepresentationApiModel;
 use Coyote\ApiModel\WebhookUpdateApiModel;
+use Coyote\ModelHelper\ResourceModelHelper;
 
 class WebhookUpdateModel
 {
@@ -15,6 +16,7 @@ class WebhookUpdateModel
     private string $name;
     private string $type;
     private string $source_uri;
+    private array $host_uris;
 
     /** @var ResourceGroupModel[] */
     private array $resourceGroups;
@@ -41,6 +43,7 @@ class WebhookUpdateModel
         $this->name = $model->attributes->name;
         $this->type = $model->attributes->resource_type;
         $this->source_uri = $model->attributes->source_uri;
+        $this->host_uris = $model->attributes->host_uris;
         $this->organization = null;
 
         if (!is_null($organizationApiModel)) {
@@ -72,33 +75,29 @@ class WebhookUpdateModel
         return $this->canonical_id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * @return string
-     */
     public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @return string
-     */
     public function getSourceUri(): string
     {
         return $this->source_uri;
     }
 
     /**
-     * @return OrganizationModel|null
+     * @return string[]
      */
+    public function getHostURIs(): array
+    {
+        return $this->host_uris;
+    }
+
     public function getOrganization(): ?OrganizationModel
     {
         return $this->organization;
@@ -122,25 +121,6 @@ class WebhookUpdateModel
 
     public function getTopRepresentationByMetum(string $metum): ?RepresentationModel
     {
-        $byMetum = array_filter($this->representations, function (RepresentationModel $r) use ($metum): bool {
-            return $r->getMetum() === $metum;
-        });
-
-        uasort($byMetum, function (RepresentationModel $a, RepresentationModel $b): int {
-            $aO = $a->getOrdinality();
-            $bO = $b->getOrdinality();
-
-            if ($aO < $bO) {
-                return -1;
-            }
-
-            if ($aO > $bO) {
-                return 1;
-            }
-
-             return 0;
-        });
-
-        return array_pop($byMetum);
+        return ResourceModelHelper::getTopRepresentationByMetum($metum, $this->representations);
     }
 }
