@@ -40,5 +40,4 @@ trait LoggerTrait
         $logger->pushHandler(new ErrorLogHandler());
         return $logger;
     }
-
 }
