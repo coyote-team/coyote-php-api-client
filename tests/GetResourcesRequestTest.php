@@ -61,11 +61,11 @@ class GetResourcesRequestTest extends AbstractTestCase
     public function testHostURIsAreAvailable(): void
     {
         $response = $this->doRequest();
-        for ($i = 0; $i <= count($response); $i++) {
+        for ($i = 0; $i < count($response); $i++) {
             $model = $response[$i];
             $this->assertEquals(
                 $model->getHostURIs(),
-                $this->contract->data[$i]->id
+                $this->contract->data[$i]->attributes->host_uris
             );
         }
     }
