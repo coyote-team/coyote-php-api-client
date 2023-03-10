@@ -6,7 +6,7 @@ use Coyote\InternalApiClient;
 use Coyote\Model\OrganizationModel;
 use Coyote\Model\ResourceModel;
 use Coyote\Request\GetResourceRequest;
-use GuzzleHttp\Psr7\Response;
+use PAC_Vendor\GuzzleHttp\Psr7\Response;
 use stdClass;
 
 /**

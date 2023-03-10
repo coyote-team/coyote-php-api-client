@@ -7,7 +7,7 @@ use Coyote\Model\ResourceModel;
 use Coyote\Payload\CreateResourcePayload;
 use Coyote\Payload\CreateResourcesPayload;
 use Coyote\Request\CreateResourcesRequest;
-use GuzzleHttp\Psr7\Response;
+use PAC_Vendor\GuzzleHttp\Psr7\Response;
 use stdClass;
 
 /**

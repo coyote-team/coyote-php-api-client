@@ -1,5 +1,6 @@
 .idea/
 vendor/
+vendor_prefixed/
 composer.lock
 phpcs.phar
 .tests/RawApiResponses/

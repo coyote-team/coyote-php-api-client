@@ -6,7 +6,7 @@ use Coyote\InternalApiClient;
 use Coyote\Model\OrganizationModel;
 use Coyote\Model\ProfileModel;
 use Coyote\Request\GetProfileRequest;
-use GuzzleHttp\Psr7\Response;
+use PAC_Vendor\GuzzleHttp\Psr7\Response;
 use stdClass;
 
 /**

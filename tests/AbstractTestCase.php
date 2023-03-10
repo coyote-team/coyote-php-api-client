@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Handler\MockHandler;
-use GuzzleHttp\HandlerStack;
+use PAC_Vendor\GuzzleHttp\Client;
+use PAC_Vendor\GuzzleHttp\Handler\MockHandler;
+use PAC_Vendor\GuzzleHttp\HandlerStack;
 use PHPUnit\Framework\TestCase;
 
 class AbstractTestCase extends TestCase

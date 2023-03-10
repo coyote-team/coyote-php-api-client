@@ -3,11 +3,9 @@
 namespace Tests;
 
 use Coyote\InternalApiClient;
-use Coyote\Model\ProfileModel;
 use Coyote\Model\ResourceGroupModel;
-use Coyote\Request\GetProfileRequest;
 use Coyote\Request\GetResourceGroupsRequest;
-use GuzzleHttp\Psr7\Response;
+use PAC_Vendor\GuzzleHttp\Psr7\Response;
 use stdClass;
 
 /**

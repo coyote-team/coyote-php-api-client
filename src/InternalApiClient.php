@@ -3,9 +3,9 @@
 namespace Coyote;
 
 use Exception;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
-use Psr\Http\Message\ResponseInterface;
+use PAC_Vendor\GuzzleHttp\Client;
+use PAC_Vendor\GuzzleHttp\Exception\GuzzleException;
+use PAC_Vendor\Psr\Http\Message\ResponseInterface;
 use stdClass;
 
 class InternalApiClient
