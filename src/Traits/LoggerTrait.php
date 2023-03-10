@@ -2,9 +2,8 @@
 
 namespace Coyote\Traits;
 
-use Monolog\Handler\ErrorLogHandler;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
+use PAC_Vendor\Monolog\Handler\ErrorLogHandler;
+use PAC_Vendor\Monolog\Logger;
 
 trait LoggerTrait
 {

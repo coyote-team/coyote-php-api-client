@@ -2,8 +2,8 @@
 
 namespace Coyote;
 
-use Monolog\Handler\ErrorLogHandler;
-use Monolog\Logger;
+use PAC_Vendor\Monolog\Handler\ErrorLogHandler;
+use PAC_Vendor\Monolog\Logger;
 
 class RequestLogger
 {
