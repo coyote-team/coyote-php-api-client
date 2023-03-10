@@ -20,6 +20,8 @@ trait LoggerTrait
 
     public static function logDebug(string $message, $data = []): void
     {
+        defined('COYOTE_API_CLIENT_DEBUG') &&
+        COYOTE_API_CLIENT_DEBUG &&
         self::log($message, $data, Logger::DEBUG, get_called_class());
     }
 
@@ -30,7 +32,13 @@ trait LoggerTrait
 
     private static function log(string $message, array $payload, int $level, string $class): void
     {
-        self::logger($class)->log($level, $message, array_merge($payload, ['class' => $class]));
+        if (class_exists('PAC_Vendor\Monolog')) {
+            self::logger($class)->log($level, $message, array_merge($payload, ['class' => $class]));
+        } else {
+            $serializedPayload = count($payload) ? print_r($payload, true) : '[]';
+            $level = Logger::getLevelName($level);
+            error_log("{$class}.{$level}: \"{$message}\" {$serializedPayload}");
+        }
     }
 
     private static function logger(string $class): Logger

@@ -15,6 +15,9 @@ class AbstractTestCase extends TestCase
 
     public function setUp(): void
     {
+        if (!defined('COYOTE_API_CLIENT_DEBUG')) {
+            define('COYOTE_API_CLIENT_DEBUG', true);
+        }
         $this->setResponses($this->responses);
         parent::setUp();
     }
