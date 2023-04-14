@@ -173,7 +173,7 @@ class CoyoteApiClientHelperFunctions
     public static function getOrganisationMembershipWithName(
         string $endpoint,
         string $token,
-        string $organizationId,
+        int $organizationId,
         string $name
     ): ?MembershipModel {
         $client = new InternalApiClient($endpoint, $token, $organizationId);
